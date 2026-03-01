@@ -19,6 +19,7 @@ const Footer = () => (
               { label: "Company", path: "/company" },
               { label: "Capabilities", path: "/capabilities" },
               { label: "Products", path: "/products" },
+              { label: "Careers", path: "/careers" },
               { label: "Contact", path: "/contact" },
             ].map((l) => (
               <Link key={l.path} to={l.path} className="block text-sm opacity-80 hover:opacity-100 transition-opacity">
@@ -40,19 +41,19 @@ const Footer = () => (
         <div>
           <h4 className="font-display font-bold text-lg mb-4">Contact</h4>
           <div className="space-y-3">
-            <div className="flex items-start gap-3">
+            <a href="https://maps.google.com/?q=GAT+NO+679/2/2+Plot+No+21-24+Chakan-Alandi+Road+Pune+Maharashtra+411062+India" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 hover:opacity-100 transition-opacity">
               <MapPin size={16} className="mt-1 flex-shrink-0" />
               <p className="text-sm opacity-80">
                 GAT NO. 679/2/2, Plot No. 21-24, Chakan-Alandi Road, Pune, Maharashtra 411062, India
               </p>
-            </div>
+            </a>
             <div className="flex items-center gap-3">
               <Phone size={16} className="flex-shrink-0" />
               <p className="text-sm opacity-80">+91 9273665000</p>
             </div>
             <div className="flex items-center gap-3">
               <Mail size={16} className="flex-shrink-0" />
-              <p className="text-sm opacity-80">tushar@shrivinayakind.com</p>
+              <a href="mailto:svipune.5000@gmail.com" className="text-sm opacity-80 hover:opacity-100 transition-opacity">svipune.5000@gmail.com</a>
             </div>
           </div>
         </div>
