@@ -24,7 +24,7 @@ const ClientLogoScroller = () => {
         {logos.map((logo, i) => (
           <div
             key={`${logo.name}-${i}`}
-            className="flex-shrink-0 h-16 md:h-20 w-32 md:w-40 flex items-center justify-center grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+            className="flex-shrink-0 h-16 md:h-20 w-32 md:w-40 flex items-center justify-center hover:scale-110 transition-transform duration-300"
           >
             <img
               src={logo.src}
