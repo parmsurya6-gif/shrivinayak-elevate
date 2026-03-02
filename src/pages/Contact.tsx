@@ -3,6 +3,7 @@ import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Mail, Phone, MapPin, User, Building, Send } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [form, setForm] = useState({
@@ -14,15 +15,23 @@ const Contact = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    // Simulate submission
-    setTimeout(() => {
+    const { error } = await supabase.from("inquiries").insert({
+      name: form.name,
+      company: form.company || null,
+      email: form.email,
+      phone: form.phone || null,
+      message: form.message,
+    });
+    if (error) {
+      toast.error("Failed to submit. Please try again.");
+    } else {
       toast.success("Your inquiry has been submitted! We'll get back to you soon.");
       setForm({ name: "", company: "", email: "", phone: "", message: "" });
-      setSubmitting(false);
-    }, 1000);
+    }
+    setSubmitting(false);
   };
 
   const contacts = [

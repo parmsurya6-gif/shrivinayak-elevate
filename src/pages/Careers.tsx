@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Briefcase, MapPin, Clock, Send, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const openings = [
   {
@@ -54,14 +55,25 @@ const Careers = () => {
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Application Submitted!",
-      description: `Thank you for applying for ${selectedJob}. We'll review your application and get back to you soon.`,
+    const { error } = await supabase.from("job_applications").insert({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone || null,
+      position: selectedJob!,
+      cover_letter: formData.message || null,
     });
-    setFormData({ name: "", email: "", phone: "", message: "" });
-    setSelectedJob(null);
+    if (error) {
+      toast({ title: "Error", description: "Failed to submit. Please try again.", variant: "destructive" });
+    } else {
+      toast({
+        title: "Application Submitted!",
+        description: `Thank you for applying for ${selectedJob}. We'll review your application and get back to you soon.`,
+      });
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      setSelectedJob(null);
+    }
   };
 
   return (
