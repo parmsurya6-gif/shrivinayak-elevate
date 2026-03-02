@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
+import ClientLogoScroller from "@/components/ClientLogoScroller";
 
 const awards = [
   { img: "/images/award-1.jpg", title: "Best Quality Performance Award" },
@@ -86,15 +87,7 @@ const Clients = () => (
           <h2 className="section-title mt-3 mb-12">Our Global Clients</h2>
         </ScrollReveal>
         <ScrollReveal delay={0.2}>
-          <div className="bg-card rounded-xl p-8 border border-border">
-            <img src="/images/clients-logos.png" alt="Client Logos" className="w-full max-w-4xl mx-auto mb-6" />
-            <img src="/images/clients-logos-2.jpg" alt="Client Logos" className="w-full max-w-4xl mx-auto" />
-          </div>
-        </ScrollReveal>
-        <ScrollReveal delay={0.3}>
-          <p className="text-muted-foreground mt-8 max-w-2xl mx-auto">
-            Ducati • Volkswagen • Tata Motors • Mahindra • JCB • Hyundai • Piaggio • John Deere • Skoda
-          </p>
+          <ClientLogoScroller />
         </ScrollReveal>
       </div>
     </section>
