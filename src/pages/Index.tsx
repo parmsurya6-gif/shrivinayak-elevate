@@ -4,6 +4,7 @@ import { ArrowRight, Shield, Award, Factory, Users } from "lucide-react";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
+import ClientLogoScroller from "@/components/ClientLogoScroller";
 
 const certifications = [
   { icon: Shield, label: "ISO 9001:2015", desc: "Certified Quality" },
@@ -153,9 +154,7 @@ const Index = () => {
             <h2 className="section-title mt-3 mb-12">Our Global Clients</h2>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <div className="bg-card rounded-xl p-8 border border-border">
-              <img src="/images/clients-logos.png" alt="Client Logos" className="w-full max-w-4xl mx-auto" />
-            </div>
+            <ClientLogoScroller />
           </ScrollReveal>
         </div>
       </section>
