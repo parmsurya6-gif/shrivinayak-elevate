@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, Inbox, Briefcase, FileText, Users, LogOut, ChevronLeft } from "lucide-react";
+import { LayoutDashboard, Inbox, Briefcase, FileText, Users, LogOut, ChevronLeft, ClipboardList } from "lucide-react";
 
 const navItems = [
   { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { to: "/admin/inquiries", icon: Inbox, label: "Inquiries & RFQs" },
+  { to: "/admin/jobs", icon: ClipboardList, label: "Job Postings" },
   { to: "/admin/applications", icon: Briefcase, label: "Job Applications" },
   { to: "/admin/content", icon: FileText, label: "Content" },
   { to: "/admin/users", icon: Users, label: "Users & Roles" },
