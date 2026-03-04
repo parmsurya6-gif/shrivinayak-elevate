@@ -20,6 +20,7 @@ import Inquiries from "./pages/admin/Inquiries";
 import Applications from "./pages/admin/Applications";
 import ContentManager from "./pages/admin/Content";
 import UserManager from "./pages/admin/Users";
+import AdminJobs from "./pages/admin/Jobs";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/admin" element={<Dashboard />} />
             <Route path="/admin/inquiries" element={<Inquiries />} />
             <Route path="/admin/applications" element={<Applications />} />
+            <Route path="/admin/jobs" element={<AdminJobs />} />
             <Route path="/admin/content" element={<ContentManager />} />
             <Route path="/admin/users" element={<UserManager />} />
             <Route path="*" element={<NotFound />} />

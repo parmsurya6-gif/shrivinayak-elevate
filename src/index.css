@@ -177,9 +177,18 @@
   }
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling & hide scrollbars */
 html {
   scroll-behavior: smooth;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 @keyframes scroll-left {

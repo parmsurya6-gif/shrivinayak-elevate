@@ -92,6 +92,42 @@ export type Database = {
         }
         Relationships: []
       }
+      job_postings: {
+        Row: {
+          created_at: string
+          department: string
+          description: string
+          id: string
+          is_active: boolean
+          location: string
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          description: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          title: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
