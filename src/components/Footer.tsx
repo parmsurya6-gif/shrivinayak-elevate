@@ -1,26 +1,41 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => (
   <footer className="bg-primary text-primary-foreground">
     <div className="max-w-7xl mx-auto section-padding">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
-          <img src="/images/logo.jpg" alt="Shrivinayak Industries" className="h-14 w-auto mb-4 rounded bg-card p-1" />
-          <p className="text-sm opacity-80 leading-relaxed">
+          <img src="/images/logo.jpg" alt="Shrivinayak Industries" className="h-14 w-auto mb-3 rounded bg-card p-1" />
+          <h3 className="font-display font-bold text-lg mb-1">Shrivinayak Industries</h3>
+          <p className="text-sm opacity-80 leading-relaxed mb-4">
             ISO 9001:2015 certified manufacturer of precision machined components, welded assemblies & fasteners.
           </p>
+          <div className="flex items-center gap-3">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity">
+              <Facebook size={20} />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity">
+              <Instagram size={20} />
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity">
+              <Linkedin size={20} />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity">
+              <Twitter size={20} />
+            </a>
+          </div>
         </div>
 
         <div>
           <h4 className="font-display font-bold text-lg mb-4">Quick Links</h4>
           <div className="space-y-2">
             {[
-              { label: "Company", path: "/company" },
+              { label: "About Us", path: "/company" },
               { label: "Capabilities", path: "/capabilities" },
               { label: "Products", path: "/products" },
               { label: "Careers", path: "/careers" },
-              { label: "Contact", path: "/contact" },
+              { label: "Contact Us", path: "/contact" },
             ].map((l) => (
               <Link key={l.path} to={l.path} className="block text-sm opacity-80 hover:opacity-100 transition-opacity">
                 {l.label}
