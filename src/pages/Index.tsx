@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import ClientLogoScroller from "@/components/ClientLogoScroller";
+import HeroSlider from "@/components/HeroSlider";
 
 const certifications = [
   { icon: Shield, label: "ISO 9001:2015", desc: "Certified Quality" },
@@ -34,10 +35,7 @@ const Index = () => {
     <Layout>
       {/* Hero */}
       <section className="relative h-[90vh] min-h-[600px] flex items-center">
-        <div className="absolute inset-0">
-          <img src="/images/hero-factory.jpg" alt="Shrivinayak Industries Factory" className="image-cover" />
-          <div className="absolute inset-0 overlay-gradient" />
-        </div>
+        <HeroSlider />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -168,16 +166,30 @@ const Index = () => {
               <h2 className="section-title mt-3">State-of-the-Art Facilities</h2>
             </div>
           </ScrollReveal>
-          <div className="overflow-x-auto pb-4">
-            <div className="flex gap-4" style={{ minWidth: "max-content" }}>
-              {facilityImages.map((img, i) => (
-                <ScrollReveal key={i} delay={i * 0.1}>
-                  <div className="w-72 h-48 rounded-lg overflow-hidden flex-shrink-0 group">
-                    <img src={img} alt={`Facility ${i + 1}`} className="image-cover h-full transition-transform duration-500 group-hover:scale-110" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {facilityImages.map((img, i) => (
+              <ScrollReveal key={i} delay={i * 0.08}>
+                <motion.div
+                  className="relative rounded-lg overflow-hidden group cursor-pointer"
+                  whileHover={{ y: -8 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="h-48 md:h-56 overflow-hidden">
+                    <motion.img
+                      src={img}
+                      alt={`Facility ${i + 1}`}
+                      className="image-cover h-full"
+                      whileHover={{ scale: 1.15, rotate: 1 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                    />
                   </div>
-                </ScrollReveal>
-              ))}
-            </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                    <span className="text-primary-foreground text-xs font-semibold uppercase tracking-wider">View Details</span>
+                  </div>
+                </motion.div>
+              </ScrollReveal>
+            ))}
           </div>
           <div className="text-center mt-8">
             <Link to="/facility" className="btn-outline inline-flex items-center gap-2">
