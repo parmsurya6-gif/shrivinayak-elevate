@@ -73,7 +73,7 @@ const Index = () => {
           <AnimatedCounter target={100} suffix="+" label="Employees" />
           <AnimatedCounter target={22000} suffix="" label="Sq.Ft. Facility" />
           <AnimatedCounter target={15} suffix="+" label="CNC Machines" />
-          <AnimatedCounter target={8} suffix="+" label="Years Experience" />
+          <AnimatedCounter target={10} suffix="+" label="Years Experience" />
         </div>
       </section>
 

@@ -6,15 +6,15 @@ import RequestQuoteDialog from "./RequestQuoteDialog";
 const mainNavItems = [
   { label: "Home", path: "/" },
   { label: "About Us", path: "/company" },
+  { label: "Capabilities", path: "/capabilities" },
+  { label: "Products", path: "/products" },
   { label: "Careers", path: "/careers" },
   { label: "Contact Us", path: "/contact" },
 ];
 
 const exploreItems = [
-  { label: "Capabilities", path: "/capabilities" },
   { label: "Facility Tour", path: "/facility" },
   { label: "Industries", path: "/industries" },
-  { label: "Products", path: "/products" },
   { label: "Clients", path: "/clients" },
 ];
 
