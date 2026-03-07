@@ -184,15 +184,33 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <Link
-                to="/auth"
-                onClick={() => setIsOpen(false)}
-                className="block px-4 py-3 rounded-md text-sm font-medium nav-link"
-              >
-                Login / Sign Up
-              </Link>
-
-              <button
+              {user ? (
+                <>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-2 px-4 py-3 rounded-md text-sm font-semibold bg-accent text-accent-foreground"
+                    >
+                      <LayoutDashboard size={16} /> Admin Dashboard
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => { handleSignOut(); setIsOpen(false); }}
+                    className="block w-full text-left px-4 py-3 rounded-md text-sm font-medium nav-link"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/auth"
+                  onClick={() => setIsOpen(false)}
+                  className="block px-4 py-3 rounded-md text-sm font-medium nav-link"
+                >
+                  Login / Sign Up
+                </Link>
+              )}
                 onClick={() => { setQuoteOpen(true); setIsOpen(false); }}
                 className="btn-primary block text-center mt-4 text-xs w-full"
               >
