@@ -211,6 +211,8 @@ const Navbar = () => {
                   Login / Sign Up
                 </Link>
               )}
+
+              <button
                 onClick={() => { setQuoteOpen(true); setIsOpen(false); }}
                 className="btn-primary block text-center mt-4 text-xs w-full"
               >
