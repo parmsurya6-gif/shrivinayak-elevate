@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, LogIn } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, ChevronDown, LogIn, LogOut, LayoutDashboard } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import RequestQuoteDialog from "./RequestQuoteDialog";
 
 const exploreItems = [
