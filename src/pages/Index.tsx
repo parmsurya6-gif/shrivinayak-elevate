@@ -104,9 +104,6 @@ const Index = () => {
               </div>
               <div className="relative">
                 <img src="/images/factory-overview.jpg" alt="Shrivinayak Factory" className="rounded-lg image-cover h-[400px] w-full object-cover" />
-                <div className="absolute -bottom-6 -left-6 bg-card p-4 rounded-lg shadow-lg border border-border hidden md:block">
-                  <img src="/images/logo-badge.png" alt="ISO Certified" className="h-20 w-auto" />
-                </div>
               </div>
             </div>
           </ScrollReveal>
