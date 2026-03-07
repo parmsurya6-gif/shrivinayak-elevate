@@ -27,10 +27,10 @@ const HeroSlider = () => {
           src={heroImages[current].src}
           alt={heroImages[current].alt}
           className="image-cover absolute inset-0"
-          initial={{ opacity: 0, scale: 1.08 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
         />
       </AnimatePresence>
       <div className="absolute inset-0 overlay-gradient" />

@@ -14,6 +14,7 @@ import Clients from "./pages/Clients";
 import Contact from "./pages/Contact";
 import Careers from "./pages/Careers";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
 import AdminLogin from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import Inquiries from "./pages/admin/Inquiries";

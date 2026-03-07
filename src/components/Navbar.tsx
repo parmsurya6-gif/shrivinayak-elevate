@@ -1,18 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, LogIn } from "lucide-react";
 import RequestQuoteDialog from "./RequestQuoteDialog";
 
-const mainNavItems = [
-  { label: "Home", path: "/" },
-  { label: "About Us", path: "/company" },
+const exploreItems = [
   { label: "Capabilities", path: "/capabilities" },
   { label: "Products", path: "/products" },
-  { label: "Careers", path: "/careers" },
-  { label: "Contact Us", path: "/contact" },
-];
-
-const exploreItems = [
   { label: "Facility Tour", path: "/facility" },
   { label: "Industries", path: "/industries" },
   { label: "Clients", path: "/clients" },
@@ -24,6 +17,16 @@ const Navbar = () => {
   const [mobileExploreOpen, setMobileExploreOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const location = useLocation();
+
+  const navItems = [
+    { label: "Home", path: "/" },
+    { label: "About Us", path: "/company" },
+  ];
+
+  const afterExplore = [
+    { label: "Careers", path: "/careers" },
+    { label: "Contact Us", path: "/contact" },
+  ];
 
   return (
     <>
@@ -40,7 +43,7 @@ const Navbar = () => {
 
             {/* Desktop */}
             <div className="hidden lg:flex items-center gap-1">
-              {mainNavItems.map((item) => (
+              {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -78,9 +81,25 @@ const Navbar = () => {
                 )}
               </div>
 
+              {afterExplore.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    location.pathname === item.path ? "nav-link-active bg-secondary" : "nav-link"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+
               <button onClick={() => setQuoteOpen(true)} className="btn-primary ml-4 text-xs">
                 Request Quote
               </button>
+
+              <Link to="/auth" className="ml-2 p-2 rounded-md nav-link transition-colors" title="Login / Sign Up">
+                <LogIn size={18} />
+              </Link>
             </div>
 
             {/* Mobile toggle */}
@@ -94,7 +113,7 @@ const Navbar = () => {
         {isOpen && (
           <div className="lg:hidden bg-card border-t border-border">
             <div className="px-4 py-4 space-y-1">
-              {mainNavItems.map((item) => (
+              {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
@@ -130,6 +149,27 @@ const Navbar = () => {
                   ))}
                 </div>
               )}
+
+              {afterExplore.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`block px-4 py-3 rounded-md text-sm font-medium transition-colors ${
+                    location.pathname === item.path ? "nav-link-active bg-secondary" : "nav-link"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+
+              <Link
+                to="/auth"
+                onClick={() => setIsOpen(false)}
+                className="block px-4 py-3 rounded-md text-sm font-medium nav-link"
+              >
+                Login / Sign Up
+              </Link>
 
               <button
                 onClick={() => { setQuoteOpen(true); setIsOpen(false); }}
