@@ -14,6 +14,7 @@ import Clients from "./pages/Clients";
 import Contact from "./pages/Contact";
 import Careers from "./pages/Careers";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
 import AdminLogin from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import Inquiries from "./pages/admin/Inquiries";
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/clients" element={<Clients />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<Dashboard />} />
             <Route path="/admin/inquiries" element={<Inquiries />} />

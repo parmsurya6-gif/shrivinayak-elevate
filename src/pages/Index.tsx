@@ -208,8 +208,8 @@ const Index = () => {
               <h2 className="section-title mt-3">Awards & Achievements</h2>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {["/images/award-1.jpg", "/images/award-2.jpg", "/images/award-3.jpg", "/images/award-4.jpg"].map((img, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {["/images/award-1.jpg", "/images/award-2.jpg", "/images/award-3.jpg", "/images/award-4.jpg", "/images/award-5.jpg"].map((img, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <div className="card-industrial overflow-hidden">
                   <img src={img} alt={`Award ${i + 1}`} className="image-cover h-48 md:h-56" />
