@@ -18,6 +18,13 @@ const Navbar = () => {
   const [mobileExploreOpen, setMobileExploreOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAdmin, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   const navItems = [
     { label: "Home", path: "/" },
