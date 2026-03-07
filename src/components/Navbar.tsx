@@ -105,9 +105,22 @@ const Navbar = () => {
                 Request Quote
               </button>
 
-              <Link to="/auth" className="ml-2 p-2 rounded-md nav-link transition-colors" title="Login / Sign Up">
-                <LogIn size={18} />
-              </Link>
+              {user ? (
+                <div className="flex items-center gap-2 ml-2">
+                  {isAdmin && (
+                    <Link to="/admin" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-semibold bg-accent text-accent-foreground hover:opacity-90 transition-opacity">
+                      <LayoutDashboard size={14} /> Admin Dashboard
+                    </Link>
+                  )}
+                  <button onClick={handleSignOut} className="p-2 rounded-md nav-link transition-colors" title="Sign Out">
+                    <LogOut size={18} />
+                  </button>
+                </div>
+              ) : (
+                <Link to="/auth" className="ml-2 p-2 rounded-md nav-link transition-colors" title="Login / Sign Up">
+                  <LogIn size={18} />
+                </Link>
+              )}
             </div>
 
             {/* Mobile toggle */}
