@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import { X } from "lucide-react";
@@ -54,17 +55,36 @@ const Capabilities = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative h-[50vh] min-h-[350px] flex items-center">
+      <section className="relative h-[50vh] min-h-[350px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/images/vmc-section.jpg" alt="Capabilities" className="image-cover" />
+          <motion.img
+            src="/images/vmc-section.jpg"
+            alt="Capabilities"
+            className="image-cover"
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
           <div className="absolute inset-0 overlay-gradient" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
-          <div className="flex items-center gap-2 mb-4">
+          <motion.div
+            className="flex items-center gap-2 mb-4"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <div className="h-px w-12 bg-highlight" />
             <span className="text-highlight text-sm font-semibold uppercase tracking-widest">What We Do</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground">Our Capabilities</h1>
+          </motion.div>
+          <motion.h1
+            className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+          >
+            Our Capabilities
+          </motion.h1>
         </div>
       </section>
 
@@ -73,10 +93,21 @@ const Capabilities = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {capabilities.map((cap, i) => (
-              <ScrollReveal key={cap.title} delay={i * 0.1}>
-                <div className="card-industrial group cursor-pointer" onClick={() => setSelected(cap)}>
+              <ScrollReveal key={cap.title} delay={i * 0.1} direction={i % 3 === 0 ? "left" : i % 3 === 1 ? "up" : "right"}>
+                <motion.div
+                  className="card-industrial group cursor-pointer"
+                  onClick={() => setSelected(cap)}
+                  whileHover={{ y: -10, boxShadow: "0 20px 40px -15px hsl(var(--accent) / 0.2)" }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
                   <div className="h-56 overflow-hidden relative">
-                    <img src={cap.img} alt={cap.title} className="image-cover h-full transition-transform duration-500 group-hover:scale-110" />
+                    <motion.img
+                      src={cap.img}
+                      alt={cap.title}
+                      className="image-cover h-full"
+                      whileHover={{ scale: 1.15, rotate: 1 }}
+                      transition={{ duration: 0.6 }}
+                    />
                     <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/30 transition-all duration-300 flex items-center justify-center">
                       <span className="text-primary-foreground font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity">Learn More</span>
                     </div>
@@ -85,7 +116,7 @@ const Capabilities = () => {
                     <h3 className="font-display font-bold text-lg mb-2">{cap.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{cap.desc}</p>
                   </div>
-                </div>
+                </motion.div>
               </ScrollReveal>
             ))}
           </div>
@@ -93,22 +124,37 @@ const Capabilities = () => {
       </section>
 
       {/* Modal */}
-      {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 backdrop-blur-sm" onClick={() => setSelected(null)}>
-          <div className="bg-card rounded-xl max-w-2xl w-full max-h-[90vh] overflow-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="relative">
-              <img src={selected.img} alt={selected.title} className="w-full h-64 object-cover rounded-t-xl" />
-              <button onClick={() => setSelected(null)} className="absolute top-4 right-4 bg-card rounded-full p-2 shadow-lg">
-                <X size={20} />
-              </button>
-            </div>
-            <div className="p-8">
-              <h3 className="font-display font-bold text-2xl mb-4">{selected.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{selected.detail}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-foreground/50 backdrop-blur-sm"
+            onClick={() => setSelected(null)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-card rounded-xl max-w-2xl w-full max-h-[90vh] overflow-auto shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <div className="relative">
+                <img src={selected.img} alt={selected.title} className="w-full h-64 object-cover rounded-t-xl" />
+                <button onClick={() => setSelected(null)} className="absolute top-4 right-4 bg-card rounded-full p-2 shadow-lg hover:scale-110 transition-transform">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="p-8">
+                <h3 className="font-display font-bold text-2xl mb-4">{selected.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{selected.detail}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 };

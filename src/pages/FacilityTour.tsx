@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -47,39 +48,79 @@ const sections = [
 const FacilityTour = () => {
   return (
     <Layout>
-      <section className="relative h-[50vh] min-h-[350px] flex items-center">
+      <section className="relative h-[50vh] min-h-[350px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/images/hero-factory.jpg" alt="Facility" className="image-cover" />
+          <motion.img
+            src="/images/hero-factory.jpg"
+            alt="Facility"
+            className="image-cover"
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
           <div className="absolute inset-0 overlay-gradient" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
-          <div className="flex items-center gap-2 mb-4">
+          <motion.div
+            className="flex items-center gap-2 mb-4"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <div className="h-px w-12 bg-highlight" />
             <span className="text-highlight text-sm font-semibold uppercase tracking-widest">Virtual Tour</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground">Facility Tour</h1>
+          </motion.div>
+          <motion.h1
+            className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+          >
+            Facility Tour
+          </motion.h1>
         </div>
       </section>
 
       <section className="section-padding bg-background">
         <div className="max-w-7xl mx-auto space-y-20">
           {sections.map((sec, i) => (
-            <ScrollReveal key={sec.title}>
-              <div className={`grid lg:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? "lg:direction-rtl" : ""}`}>
+            <div key={sec.title} className="grid lg:grid-cols-2 gap-10 items-center">
+              <ScrollReveal direction={i % 2 === 0 ? "left" : "right"}>
                 <div className={i % 2 === 1 ? "lg:order-2" : ""}>
-                  <span className="text-accent text-sm font-semibold uppercase tracking-widest">Section {String(i + 1).padStart(2, "0")}</span>
+                  <motion.span
+                    className="text-accent text-sm font-semibold uppercase tracking-widest inline-block"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    Section {String(i + 1).padStart(2, "0")}
+                  </motion.span>
                   <h2 className="font-display font-bold text-2xl md:text-3xl mt-2 mb-4">{sec.title}</h2>
                   <p className="text-muted-foreground leading-relaxed">{sec.desc}</p>
                 </div>
+              </ScrollReveal>
+              <ScrollReveal direction={i % 2 === 0 ? "right" : "left"} delay={0.15}>
                 <div className={`grid ${sec.images.length > 1 ? "grid-cols-2" : "grid-cols-1"} gap-4 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
                   {sec.images.map((img, j) => (
-                    <div key={j} className={`rounded-lg overflow-hidden ${sec.images.length === 3 && j === 0 ? "col-span-2" : ""}`}>
-                      <img src={img} alt={sec.title} className="image-cover h-56 w-full group hover:scale-105 transition-transform duration-500" />
-                    </div>
+                    <motion.div
+                      key={j}
+                      className={`rounded-lg overflow-hidden ${sec.images.length === 3 && j === 0 ? "col-span-2" : ""}`}
+                      whileHover={{ y: -6, scale: 1.02 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <motion.img
+                        src={img}
+                        alt={sec.title}
+                        className="image-cover h-56 w-full"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    </motion.div>
                   ))}
                 </div>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            </div>
           ))}
         </div>
       </section>
