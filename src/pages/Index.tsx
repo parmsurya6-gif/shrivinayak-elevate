@@ -6,6 +6,8 @@ import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import ClientLogoScroller from "@/components/ClientLogoScroller";
 import HeroSlider from "@/components/HeroSlider";
+import AnimatedText from "@/components/AnimatedText";
+import ParallaxSection from "@/components/ParallaxSection";
 
 const certifications = [
   { icon: Shield, label: "ISO 9001:2015", desc: "Certified Quality" },
@@ -30,6 +32,15 @@ const facilityImages = [
   "/images/traub-section.jpg",
 ];
 
+const awardImages = [
+  { img: "/images/award-real-1.jpg", title: "Best Quality Performance Award" },
+  { img: "/images/award-real-2.jpg", title: "Best Quality Trophy" },
+  { img: "/images/award-real-3.jpg", title: "Best Supplier Award" },
+  { img: "/images/award-real-4.jpg", title: "Best Supplier Trophy" },
+  { img: "/images/award-real-5.jpg", title: "Certificate of Appreciation" },
+  { img: "/images/award-real-6.jpg", title: "Appreciation Certificate" },
+];
+
 const Index = () => {
   return (
     <Layout>
@@ -43,26 +54,43 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="max-w-3xl"
           >
-            <div className="flex items-center gap-2 mb-6">
+            <motion.div
+              className="flex items-center gap-2 mb-6"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               <div className="h-px w-12 bg-highlight" />
               <span className="text-highlight text-sm font-semibold uppercase tracking-widest">Since 2016</span>
-            </div>
+            </motion.div>
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-display font-extrabold text-primary-foreground leading-tight mb-6">
-              Engineering Precision.
+              <AnimatedText text="Engineering Precision." delay={0.4} />
               <br />
-              <span className="text-highlight">Delivering Trust.</span>
+              <span className="text-highlight">
+                <AnimatedText text="Delivering Trust." delay={0.8} />
+              </span>
             </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-xl">
+            <motion.p
+              className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+            >
               Manufacturer and supplier of precision machined components, welded assemblies & fasteners for global automotive and industrial leaders.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            </motion.p>
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.5 }}
+            >
               <Link to="/capabilities" className="inline-flex items-center gap-2 bg-highlight text-accent-foreground px-8 py-4 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity">
                 Explore Capabilities <ArrowRight size={18} />
               </Link>
               <Link to="/contact" className="inline-flex items-center gap-2 border-2 border-primary-foreground/40 text-primary-foreground px-8 py-4 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-all">
                 Request a Quote
               </Link>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -80,11 +108,11 @@ const Index = () => {
       {/* Company Snapshot */}
       <section className="section-padding bg-background">
         <div className="max-w-7xl mx-auto">
-          <ScrollReveal>
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <ScrollReveal direction="left">
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="h-px w-12 bg-accent" />
+                  <motion.div className="h-px w-12 bg-accent" initial={{ width: 0 }} whileInView={{ width: 48 }} viewport={{ once: true }} transition={{ duration: 0.8 }} />
                   <span className="text-accent text-sm font-semibold uppercase tracking-widest">About Us</span>
                 </div>
                 <h2 className="section-title mb-6">
@@ -94,19 +122,49 @@ const Index = () => {
                   Shrivinayak Industries is an ISO 9001:2015 certified organization specializing in the manufacture and supply of machined components, welded assemblies, and fasteners. Established in 2016 in Pune, we serve tier-1 suppliers for Ducati, Volkswagen, Tata, Mahindra, JCB, and more.
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  {certifications.map((cert) => (
-                    <div key={cert.label} className="flex items-center gap-2 badge-cert">
+                  {certifications.map((cert, i) => (
+                    <motion.div
+                      key={cert.label}
+                      className="flex items-center gap-2 badge-cert"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 + i * 0.15, duration: 0.4 }}
+                      whileHover={{ scale: 1.1 }}
+                    >
                       <cert.icon size={14} />
                       <span>{cert.label}</span>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
+            </ScrollReveal>
+            <ScrollReveal direction="right">
               <div className="relative">
-                <img src="/images/factory-overview.jpg" alt="Shrivinayak Factory" className="rounded-lg image-cover h-[400px] w-full object-cover" />
+                <motion.img
+                  src="/images/factory-overview.jpg"
+                  alt="Shrivinayak Factory"
+                  className="rounded-lg image-cover h-[400px] w-full object-cover"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.5 }}
+                />
+                <motion.div
+                  className="absolute -bottom-4 -left-4 w-24 h-24 rounded-lg bg-accent/20 -z-10"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                />
+                <motion.div
+                  className="absolute -top-4 -right-4 w-32 h-32 rounded-lg bg-highlight/10 -z-10"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.7 }}
+                />
               </div>
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
@@ -121,20 +179,26 @@ const Index = () => {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-8">
             {capabilities.map((cap, i) => (
-              <ScrollReveal key={cap.title} delay={i * 0.15}>
-                <div className="card-industrial group">
+              <ScrollReveal key={cap.title} delay={i * 0.15} direction="scale">
+                <motion.div
+                  className="card-industrial group"
+                  whileHover={{ y: -12, boxShadow: "0 20px 40px -15px hsl(var(--accent) / 0.2)" }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
                   <div className="h-64 overflow-hidden">
-                    <img
+                    <motion.img
                       src={cap.img}
                       alt={cap.title}
-                      className="image-cover h-full transition-transform duration-500 group-hover:scale-110"
+                      className="image-cover h-full"
+                      whileHover={{ scale: 1.15, rotate: 1 }}
+                      transition={{ duration: 0.6 }}
                     />
                   </div>
                   <div className="p-6">
                     <h3 className="font-display font-bold text-lg mb-2">{cap.title}</h3>
                     <p className="text-muted-foreground text-sm">{cap.desc}</p>
                   </div>
-                </div>
+                </motion.div>
               </ScrollReveal>
             ))}
           </div>
@@ -148,7 +212,7 @@ const Index = () => {
             <span className="text-accent text-sm font-semibold uppercase tracking-widest">Trusted Partners</span>
             <h2 className="section-title mt-3 mb-12">Our Global Clients</h2>
           </ScrollReveal>
-          <ScrollReveal delay={0.2}>
+          <ScrollReveal delay={0.2} direction="fade">
             <ClientLogoScroller />
           </ScrollReveal>
         </div>
@@ -165,7 +229,7 @@ const Index = () => {
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {facilityImages.map((img, i) => (
-              <ScrollReveal key={i} delay={i * 0.08}>
+              <ScrollReveal key={i} delay={i * 0.08} direction={i % 2 === 0 ? "up" : "scale"}>
                 <motion.div
                   className="relative rounded-lg overflow-hidden group cursor-pointer"
                   whileHover={{ y: -8 }}
@@ -205,12 +269,27 @@ const Index = () => {
               <h2 className="section-title mt-3">Awards & Achievements</h2>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {["/images/award-1.jpg", "/images/award-2.jpg", "/images/award-3.jpg", "/images/award-4.jpg", "/images/award-5.jpg"].map((img, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="card-industrial overflow-hidden">
-                  <img src={img} alt={`Award ${i + 1}`} className="image-cover h-48 md:h-56" />
-                </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {awardImages.map((award, i) => (
+              <ScrollReveal key={i} delay={i * 0.1} direction="scale">
+                <motion.div
+                  className="card-industrial overflow-hidden group cursor-pointer"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="h-48 md:h-56 overflow-hidden">
+                    <motion.img
+                      src={award.img}
+                      alt={award.title}
+                      className="image-cover h-full"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                  <div className="p-3 text-center">
+                    <p className="text-sm font-semibold text-foreground">{award.title}</p>
+                  </div>
+                </motion.div>
               </ScrollReveal>
             ))}
           </div>
@@ -218,13 +297,13 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="relative py-24">
+      <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0">
           <img src="/images/cnc-section.jpg" alt="CNC" className="image-cover" />
           <div className="absolute inset-0 overlay-gradient" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center px-4">
-          <ScrollReveal>
+          <ScrollReveal direction="scale">
             <h2 className="text-3xl md:text-5xl font-display font-extrabold text-primary-foreground mb-6">
               Let's Build Something Together
             </h2>
@@ -232,12 +311,16 @@ const Index = () => {
               Partner with us for precision-engineered components that meet the highest quality standards.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact" className="bg-highlight text-accent-foreground px-10 py-4 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity">
-                Get Started
-              </Link>
-              <Link to="/capabilities" className="border-2 border-primary-foreground/40 text-primary-foreground px-10 py-4 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-all">
-                Our Capabilities
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <Link to="/contact" className="bg-highlight text-accent-foreground px-10 py-4 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity inline-block">
+                  Get Started
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                <Link to="/capabilities" className="border-2 border-primary-foreground/40 text-primary-foreground px-10 py-4 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-all inline-block">
+                  Our Capabilities
+                </Link>
+              </motion.div>
             </div>
           </ScrollReveal>
         </div>

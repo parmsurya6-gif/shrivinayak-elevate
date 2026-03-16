@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -17,17 +18,36 @@ const products = [
 
 const Products = () => (
   <Layout>
-    <section className="relative h-[50vh] min-h-[350px] flex items-center">
+    <section className="relative h-[50vh] min-h-[350px] flex items-center overflow-hidden">
       <div className="absolute inset-0">
-        <img src="/images/products-1.png" alt="Products" className="image-cover" />
+        <motion.img
+          src="/images/products-1.png"
+          alt="Products"
+          className="image-cover"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        />
         <div className="absolute inset-0 overlay-gradient" />
       </div>
       <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
-        <div className="flex items-center gap-2 mb-4">
+        <motion.div
+          className="flex items-center gap-2 mb-4"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           <div className="h-px w-12 bg-highlight" />
           <span className="text-highlight text-sm font-semibold uppercase tracking-widest">Gallery</span>
-        </div>
-        <h1 className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground">Products Gallery</h1>
+        </motion.div>
+        <motion.h1
+          className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+        >
+          Products Gallery
+        </motion.h1>
       </div>
     </section>
 
@@ -42,9 +62,19 @@ const Products = () => (
         </ScrollReveal>
         <div className="masonry-grid">
           {products.map((img, i) => (
-            <ScrollReveal key={i} delay={i * 0.05}>
-              <div className="card-industrial group relative overflow-hidden cursor-pointer">
-                <img src={img} alt={`Product ${i + 1}`} className="w-full transition-transform duration-500 group-hover:scale-110" />
+            <ScrollReveal key={i} delay={i * 0.05} direction={i % 3 === 0 ? "scale" : "up"}>
+              <motion.div
+                className="card-industrial group relative overflow-hidden cursor-pointer"
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                <motion.img
+                  src={img}
+                  alt={`Product ${i + 1}`}
+                  className="w-full"
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.5 }}
+                />
                 <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/60 transition-all duration-300 flex items-center justify-center">
                   <Link
                     to="/contact"
@@ -53,7 +83,7 @@ const Products = () => (
                     Request Quote
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             </ScrollReveal>
           ))}
         </div>

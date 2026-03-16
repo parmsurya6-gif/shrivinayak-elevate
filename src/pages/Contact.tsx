@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Mail, Phone, MapPin, User, Building, Send } from "lucide-react";
@@ -42,17 +43,36 @@ const Contact = () => {
 
   return (
     <Layout>
-      <section className="relative h-[40vh] min-h-[300px] flex items-center">
+      <section className="relative h-[40vh] min-h-[300px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/images/hero-factory.jpg" alt="Contact" className="image-cover" />
+          <motion.img
+            src="/images/hero-factory.jpg"
+            alt="Contact"
+            className="image-cover"
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
           <div className="absolute inset-0 overlay-gradient" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
-          <div className="flex items-center gap-2 mb-4">
+          <motion.div
+            className="flex items-center gap-2 mb-4"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <div className="h-px w-12 bg-highlight" />
             <span className="text-highlight text-sm font-semibold uppercase tracking-widest">Get in Touch</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground">Contact & RFQ</h1>
+          </motion.div>
+          <motion.h1
+            className="text-4xl md:text-6xl font-display font-extrabold text-primary-foreground"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
+          >
+            Contact & RFQ
+          </motion.h1>
         </div>
       </section>
 
@@ -64,10 +84,17 @@ const Contact = () => {
               <div>
                 <h2 className="font-display font-bold text-2xl mb-6">Contact Information</h2>
                 <div className="space-y-6 mb-10">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <motion.div
+                    className="flex items-start gap-4"
+                    whileHover={{ x: 6 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <motion.div
+                      className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0"
+                      whileHover={{ rotate: 10, scale: 1.1 }}
+                    >
                       <MapPin className="text-accent" size={22} />
-                    </div>
+                    </motion.div>
                     <div>
                       <p className="font-semibold mb-1">Mailing Address</p>
                       <p className="text-muted-foreground text-sm leading-relaxed">
@@ -77,13 +104,21 @@ const Contact = () => {
                         Pune, Maharashtra 411062, India
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
 
                 <h3 className="font-display font-bold text-lg mb-4">Key Contacts</h3>
                 <div className="space-y-4">
-                  {contacts.map((c) => (
-                    <div key={c.name} className="bg-card rounded-lg p-5 border border-border">
+                  {contacts.map((c, i) => (
+                    <motion.div
+                      key={c.name}
+                      className="bg-card rounded-lg p-5 border border-border"
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.1 + i * 0.1 }}
+                      whileHover={{ x: 6, boxShadow: "0 10px 30px -10px hsl(var(--accent) / 0.15)" }}
+                    >
                       <p className="font-semibold">{c.name} <span className="text-muted-foreground font-normal text-sm">— {c.role}</span></p>
                       <div className="flex flex-col gap-1 mt-2">
                         <a href={`mailto:${c.email}`} className="flex items-center gap-2 text-sm text-accent hover:underline">
@@ -93,7 +128,7 @@ const Contact = () => {
                           <Phone size={14} /> {c.phone}
                         </a>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
 
@@ -107,7 +142,11 @@ const Contact = () => {
 
             {/* Right - RFQ Form */}
             <ScrollReveal direction="right">
-              <div className="bg-card rounded-xl p-8 border border-border shadow-sm">
+              <motion.div
+                className="bg-card rounded-xl p-8 border border-border shadow-sm"
+                whileHover={{ boxShadow: "0 20px 40px -15px hsl(var(--accent) / 0.1)" }}
+                transition={{ duration: 0.3 }}
+              >
                 <h2 className="font-display font-bold text-2xl mb-2">Request for Quote</h2>
                 <p className="text-muted-foreground text-sm mb-8">Fill in the details and our team will get back to you within 24 hours.</p>
 
@@ -121,7 +160,7 @@ const Contact = () => {
                           required
                           value={form.name}
                           onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
                           placeholder="Your name"
                         />
                       </div>
@@ -133,7 +172,7 @@ const Contact = () => {
                         <input
                           value={form.company}
                           onChange={(e) => setForm({ ...form, company: e.target.value })}
-                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
                           placeholder="Company name"
                         />
                       </div>
@@ -149,7 +188,7 @@ const Contact = () => {
                           type="email"
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
                           placeholder="your@email.com"
                         />
                       </div>
@@ -161,7 +200,7 @@ const Contact = () => {
                         <input
                           value={form.phone}
                           onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                          className="w-full pl-10 pr-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
                           placeholder="+91 XXXXXXXXXX"
                         />
                       </div>
@@ -174,20 +213,22 @@ const Contact = () => {
                       rows={5}
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full px-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+                      className="w-full px-4 py-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none transition-shadow"
                       placeholder="Describe your requirements, part details, quantities..."
                     />
                   </div>
-                  <button
+                  <motion.button
                     type="submit"
                     disabled={submitting}
                     className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-60"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <Send size={16} />
                     {submitting ? "Submitting..." : "Submit Inquiry"}
-                  </button>
+                  </motion.button>
                 </form>
-              </div>
+              </motion.div>
             </ScrollReveal>
           </div>
         </div>
