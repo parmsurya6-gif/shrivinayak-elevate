@@ -3,11 +3,12 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ClientLogoScroller from "@/components/ClientLogoScroller";
 
 const awards = [
-  { img: "/images/award-1.jpg", title: "Best Quality Performance Award" },
-  { img: "/images/award-2.jpg", title: "Best Supplier Award" },
-  { img: "/images/award-3.jpg", title: "Utkarsh Award" },
-  { img: "/images/award-4.jpg", title: "Certificate of Appreciation" },
-  { img: "/images/award-5.jpg", title: "Industry Excellence" },
+  { img: "/images/award-real-1.jpg", title: "Best Quality Performance Award" },
+  { img: "/images/award-real-2.jpg", title: "Best Quality Trophy" },
+  { img: "/images/award-real-3.jpg", title: "Best Supplier Award" },
+  { img: "/images/award-real-4.jpg", title: "Best Supplier Trophy" },
+  { img: "/images/award-real-5.jpg", title: "Certificate of Appreciation" },
+  { img: "/images/award-real-6.jpg", title: "Appreciation Certificate" },
 ];
 
 const Clients = () => (

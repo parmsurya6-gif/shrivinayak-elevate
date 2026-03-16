@@ -205,12 +205,34 @@ const Index = () => {
               <h2 className="section-title mt-3">Awards & Achievements</h2>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {["/images/award-1.jpg", "/images/award-2.jpg", "/images/award-3.jpg", "/images/award-4.jpg", "/images/award-5.jpg"].map((img, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {[
+              { img: "/images/award-real-1.jpg", title: "Best Quality Performance Award" },
+              { img: "/images/award-real-2.jpg", title: "Best Quality Trophy" },
+              { img: "/images/award-real-3.jpg", title: "Best Supplier Award" },
+              { img: "/images/award-real-4.jpg", title: "Best Supplier Trophy" },
+              { img: "/images/award-real-5.jpg", title: "Certificate of Appreciation" },
+              { img: "/images/award-real-6.jpg", title: "Appreciation Certificate" },
+            ].map((award, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="card-industrial overflow-hidden">
-                  <img src={img} alt={`Award ${i + 1}`} className="image-cover h-48 md:h-56" />
-                </div>
+                <motion.div
+                  className="card-industrial overflow-hidden group cursor-pointer"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <div className="h-48 md:h-56 overflow-hidden">
+                    <motion.img
+                      src={award.img}
+                      alt={award.title}
+                      className="image-cover h-full"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                  <div className="p-3 text-center">
+                    <p className="text-sm font-semibold text-foreground">{award.title}</p>
+                  </div>
+                </motion.div>
               </ScrollReveal>
             ))}
           </div>
