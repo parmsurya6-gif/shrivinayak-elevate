@@ -429,9 +429,9 @@ const ImageUploadField = ({
 
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium text-foreground">{label}</label>
-      <div className="flex items-center gap-3">
-        <div className="relative w-24 h-24 rounded-lg border border-border bg-secondary/50 overflow-hidden flex-shrink-0">
+      <label className="text-xs md:text-sm font-medium text-foreground">{label}</label>
+      <div className="flex flex-col sm:flex-row items-start gap-3">
+        <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-lg border border-border bg-secondary/50 overflow-hidden flex-shrink-0">
           {value ? (
             <>
               <img src={value} alt={label} className="w-full h-full object-cover" />
@@ -711,9 +711,9 @@ const ContentManager = () => {
         </div>
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="flex flex-wrap gap-1 h-auto p-1 mb-6 bg-secondary">
+          <TabsList className="flex flex-wrap gap-1 h-auto p-1 mb-4 md:mb-6 bg-secondary overflow-x-auto">
             {pageKeys.map(key => (
-              <TabsTrigger key={key} value={key} className="text-sm capitalize">
+              <TabsTrigger key={key} value={key} className="text-xs md:text-sm capitalize whitespace-nowrap">
                 {PAGE_STRUCTURE[key].label}
               </TabsTrigger>
             ))}
