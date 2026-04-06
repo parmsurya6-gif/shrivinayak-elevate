@@ -617,25 +617,25 @@ const ContentManager = () => {
 
   return (
     <AdminLayout>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="font-display font-bold text-2xl">Content Management</h1>
-          <p className="text-sm text-muted-foreground mt-1">Edit all website text and images. Fields show current content — edit and save.</p>
+          <h1 className="font-display font-bold text-xl md:text-2xl">Content Management</h1>
+          <p className="text-xs md:text-sm text-muted-foreground mt-1">Edit all website text and images.</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={seedAllDefaults}
             disabled={seedingAll}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg bg-accent text-accent-foreground text-xs md:text-sm font-medium hover:bg-accent/90 transition-colors disabled:opacity-50"
           >
             <Database size={16} />
-            {seedingAll ? "Saving..." : "Save All to Database"}
+            {seedingAll ? "Saving..." : "Save All"}
           </button>
           <button
             onClick={() => setShowRawEditor(!showRawEditor)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${showRawEditor ? "bg-accent text-accent-foreground" : "bg-secondary text-foreground hover:bg-secondary/80"}`}
+            className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-colors ${showRawEditor ? "bg-accent text-accent-foreground" : "bg-secondary text-foreground hover:bg-secondary/80"}`}
           >
-            {showRawEditor ? "Visual Editor" : "Raw Editor"}
+            {showRawEditor ? "Visual" : "Raw"}
           </button>
         </div>
       </div>
