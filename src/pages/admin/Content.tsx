@@ -815,7 +815,9 @@ const ContentManager = () => {
               {PAGE_STRUCTURE[pageKey].sections.map(section => {
                 const sectionId = `${pageKey}-${section.key}`;
                 const isExpanded = expandedSections[sectionId] !== false;
-                const savedCount = section.fields.filter(f => isFieldSaved(pageKey, section.key, f.key)).length;
+                const sectionFields = getSectionFields(pageKey, section);
+                const savedCount = sectionFields.filter(f => isFieldSaved(pageKey, section.key, f.key)).length;
+                const isProductGallery = pageKey === "products" && section.key === "gallery";
 
                 return (
                   <div key={sectionId} className="bg-card rounded-xl border border-border overflow-hidden">
@@ -827,23 +829,33 @@ const ContentManager = () => {
                         {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                         <h3 className="font-display font-bold text-base">{section.label}</h3>
                         <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded">
-                          {savedCount}/{section.fields.length} saved
+                          {savedCount}/{sectionFields.length} saved
                         </span>
                       </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          saveSection(pageKey, section.key, section.fields);
-                        }}
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-colors"
-                      >
-                        <Save size={14} /> Save Section
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {isProductGallery && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); addGalleryImage(pageKey, section.key); }}
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
+                          >
+                            <Plus size={14} /> Add Image
+                          </button>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            saveSection(pageKey, section.key, sectionFields);
+                          }}
+                          className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-lg bg-accent text-accent-foreground text-xs md:text-sm font-medium hover:bg-accent/90 transition-colors"
+                        >
+                          <Save size={14} /> Save Section
+                        </button>
+                      </div>
                     </button>
 
                     {isExpanded && (
                       <div className="px-5 pb-5 space-y-5 border-t border-border pt-5">
-                        {section.fields.map(field => {
+                        {sectionFields.map(field => {
                           const saved = isFieldSaved(pageKey, section.key, field.key);
                           return (
                             <div key={field.key}>
