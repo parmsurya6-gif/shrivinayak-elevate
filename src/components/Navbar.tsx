@@ -3,6 +3,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import RequestQuoteDialog from "./RequestQuoteDialog";
+import { useCmsPage } from "@/hooks/useCmsPage";
+
+const navbarDefaults: Record<string, Record<string, string>> = {
+  brand: {
+    logo: "/images/logo.jpg",
+    name_line1: "Shrivinayak",
+    name_line2: "Industries",
+    alt: "Shrivinayak Industries",
+  },
+};
 
 const exploreItems = [
   { label: "Capabilities", path: "/capabilities" },
@@ -20,6 +30,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
+  const { get } = useCmsPage("navbar", navbarDefaults);
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -44,10 +55,10 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             <Link to="/" className="flex items-center gap-3">
-              <img src="/images/logo.jpg" alt="Shrivinayak Industries" className="h-10 lg:h-12 w-auto" />
+              <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-10 lg:h-12 w-auto" />
               <div className="hidden sm:block">
-                <p className="font-display font-bold text-foreground text-sm lg:text-base leading-tight">Shrivinayak</p>
-                <p className="font-display font-bold text-accent text-xs lg:text-sm leading-tight">Industries</p>
+                <p className="font-display font-bold text-foreground text-sm lg:text-base leading-tight">{get("brand", "name_line1")}</p>
+                <p className="font-display font-bold text-accent text-xs lg:text-sm leading-tight">{get("brand", "name_line2")}</p>
               </div>
             </Link>
 
