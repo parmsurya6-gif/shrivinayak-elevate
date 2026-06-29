@@ -339,18 +339,49 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
       {
         key: "sections", label: "Facility Sections",
         fields: [
-          { key: "sec_1_title", label: "Section 1 Title", type: "text", default: "CNC Machining Center" },
-          { key: "sec_1_desc", label: "Section 1 Description", type: "textarea", default: "Our CNC machining center houses multiple high-precision lathes capable of producing complex components." },
-          { key: "sec_1_image_1", label: "Section 1 Image 1", type: "image", default: "/images/cnc-section.jpg" },
-          { key: "sec_2_title", label: "Section 2 Title", type: "text", default: "VMC Machining Center" },
-          { key: "sec_2_desc", label: "Section 2 Description", type: "textarea", default: "Our vertical machining centers handle milling, drilling, and tapping operations with exceptional accuracy." },
-          { key: "sec_2_image_1", label: "Section 2 Image 1", type: "image", default: "/images/vmc-section.jpg" },
-          { key: "sec_3_title", label: "Section 3 Title", type: "text", default: "Welding Station" },
-          { key: "sec_3_desc", label: "Section 3 Description", type: "textarea", default: "Dedicated CO2 welding stations with trained and certified operators." },
-          { key: "sec_3_image_1", label: "Section 3 Image 1", type: "image", default: "/images/welding.jpg" },
-          { key: "sec_4_title", label: "Section 4 Title", type: "text", default: "Quality Lab" },
-          { key: "sec_4_desc", label: "Section 4 Description", type: "textarea", default: "Fully equipped quality laboratory with CMM, profile projectors, and calibrated gauges." },
-          { key: "sec_4_image_1", label: "Section 4 Image 1", type: "image", default: "/images/quality-lab.jpg" },
+          { key: "sec_1_title", label: "Section 1 Title", type: "text", default: "CNC Machining Section" },
+          { key: "sec_1_desc", label: "Section 1 Description", type: "textarea", default: "15 CNC machines for high-precision turning operations and complex component manufacturing." },
+          { key: "sec_1_image_1", label: "Section 1 Image", type: "image", default: "/images/cnc-section.jpg" },
+
+          { key: "sec_2_title", label: "Section 2 Title", type: "text", default: "Traub Machines" },
+          { key: "sec_2_desc", label: "Section 2 Description", type: "textarea", default: "12 Traub machines for high-volume precision turning of fasteners and small components." },
+          { key: "sec_2_image_1", label: "Section 2 Image", type: "image", default: "/images/traub-section.jpg" },
+
+          { key: "sec_3_title", label: "Section 3 Title", type: "text", default: "VMC Section" },
+          { key: "sec_3_desc", label: "Section 3 Description", type: "textarea", default: "7 VMC machines (3-axis & 4-axis) for complex milling operations." },
+          { key: "sec_3_image_1", label: "Section 3 Image", type: "image", default: "/images/vmc-section.jpg" },
+
+          { key: "sec_4_title", label: "Section 4 Title", type: "text", default: "Cutting Section" },
+          { key: "sec_4_desc", label: "Section 4 Description", type: "textarea", default: "CNC circular saw and bandsaw machines for accurate raw material cutting." },
+          { key: "sec_4_image_1", label: "Section 4 Image", type: "image", default: "/images/cutting-machine.jpg" },
+
+          { key: "sec_5_title", label: "Section 5 Title", type: "text", default: "Oxy-Profile Cutting Machines" },
+          { key: "sec_5_desc", label: "Section 5 Description", type: "textarea", default: "Dedicated oxy-profile cutting machines for clean and accurate plate cutting." },
+          { key: "sec_5_image_1", label: "Section 5 Image", type: "image", default: "/images/oxy-cutting.jpg" },
+
+          { key: "sec_6_title", label: "Section 6 Title", type: "text", default: "Welding Section" },
+          { key: "sec_6_desc", label: "Section 6 Description", type: "textarea", default: "4 CO2 welding machines for robust welded assemblies." },
+          { key: "sec_6_image_1", label: "Section 6 Image", type: "image", default: "/images/welding.jpg" },
+
+          { key: "sec_7_title", label: "Section 7 Title", type: "text", default: "Wire Cutting Section" },
+          { key: "sec_7_desc", label: "Section 7 Description", type: "textarea", default: "Precision wire EDM machines for tooling and intricate component profiles." },
+          { key: "sec_7_image_1", label: "Section 7 Image", type: "image", default: "/images/wire-cutting.jpg" },
+
+          { key: "sec_8_title", label: "Section 8 Title", type: "text", default: "3-Axis Pipe Bending Machines" },
+          { key: "sec_8_desc", label: "Section 8 Description", type: "textarea", default: "3-axis pipe bending machines for accurate and repeatable bent pipe assemblies." },
+          { key: "sec_8_image_1", label: "Section 8 Image", type: "image", default: "/images/pipe-bending.jpg" },
+
+          { key: "sec_9_title", label: "Section 9 Title", type: "text", default: "Quality Lab" },
+          { key: "sec_9_desc", label: "Section 9 Description", type: "textarea", default: "Fully equipped with Hardness Tester, Trimos Height Gauge, Vision Measuring Machine, and more." },
+          { key: "sec_9_image_1", label: "Section 9 Image", type: "image", default: "/images/quality-lab.jpg" },
+
+          { key: "sec_10_title", label: "Section 10 Title", type: "text", default: "Inspection Area" },
+          { key: "sec_10_desc", label: "Section 10 Description", type: "textarea", default: "Final inspection tables with Quality Gate 02 for 100% inspection." },
+          { key: "sec_10_image_1", label: "Section 10 Image", type: "image", default: "/images/final-inspection.jpg" },
+
+          { key: "sec_11_title", label: "Section 11 Title", type: "text", default: "Power Backup" },
+          { key: "sec_11_desc", label: "Section 11 Description", type: "textarea", default: "250 KVA DG Set ensuring uninterrupted production." },
+          { key: "sec_11_image_1", label: "Section 11 Image", type: "image", default: "/images/power-backup.png" },
         ],
       },
     ],
