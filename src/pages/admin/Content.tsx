@@ -547,6 +547,7 @@ const ContentManager = () => {
   const [showRawEditor, setShowRawEditor] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [seedingAll, setSeedingAll] = useState(false);
+  const [extraFields, setExtraFields] = useState<Record<string, FieldDef[]>>({});
   const [newItem, setNewItem] = useState({ page: "", section: "", content_key: "", content_value: "", content_type: "text" });
 
   const load = async () => {
@@ -570,6 +571,26 @@ const ContentManager = () => {
       vals[`${item.page}|${item.section}|${item.content_key}`] = item.content_value ?? "";
     });
     setLocalValues(vals);
+
+    // Build extras: DB rows for known sections whose keys are not in PAGE_STRUCTURE
+    const extras: Record<string, FieldDef[]> = {};
+    for (const item of loaded) {
+      const page = PAGE_STRUCTURE[item.page];
+      if (!page) continue;
+      const section = page.sections.find(s => s.key === item.section);
+      if (!section) continue;
+      if (section.fields.some(f => f.key === item.content_key)) continue;
+      const sid = `${item.page}|${item.section}`;
+      extras[sid] = extras[sid] || [];
+      if (!extras[sid].some(f => f.key === item.content_key)) {
+        extras[sid].push({
+          key: item.content_key,
+          label: item.content_key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+          type: item.content_type === "image" ? "image" : "text",
+        });
+      }
+    }
+    setExtraFields(extras);
     setLoading(false);
   };
 
@@ -659,6 +680,31 @@ const ContentManager = () => {
   };
 
   const pageKeys = Object.keys(PAGE_STRUCTURE);
+
+  const getSectionFields = (pageKey: string, section: SectionDef): FieldDef[] => {
+    const extras = extraFields[`${pageKey}|${section.key}`] ?? [];
+    return [...section.fields, ...extras];
+  };
+
+  const addGalleryImage = (pageKey: string, sectionKey: string) => {
+    const sid = `${pageKey}|${sectionKey}`;
+    const existing = [
+      ...(PAGE_STRUCTURE[pageKey].sections.find(s => s.key === sectionKey)?.fields ?? []),
+      ...(extraFields[sid] ?? []),
+    ];
+    const nums = existing
+      .map(f => f.key.match(/^product_(\d+)_image$/))
+      .filter(Boolean)
+      .map(m => parseInt(m![1], 10));
+    const next = (nums.length ? Math.max(...nums) : 0) + 1;
+    const key = `product_${next}_image`;
+    setExtraFields(prev => ({
+      ...prev,
+      [sid]: [...(prev[sid] ?? []), { key, label: `Product ${next} Image`, type: "image" }],
+    }));
+    setLocalValues(prev => ({ ...prev, [`${pageKey}|${sectionKey}|${key}`]: "" }));
+    toast.success(`Added new image slot: ${key}`);
+  };
 
   return (
     <AdminLayout>
