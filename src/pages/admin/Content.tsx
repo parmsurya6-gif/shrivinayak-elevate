@@ -30,6 +30,20 @@ interface SectionDef {
 
 // Define the page structure with DEFAULT values from current hardcoded content
 const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> = {
+  navbar: {
+    label: "Navbar / Brand",
+    sections: [
+      {
+        key: "brand", label: "Logo & Company Name",
+        fields: [
+          { key: "logo", label: "Logo Image", type: "image", default: "/images/logo.jpg" },
+          { key: "name_line1", label: "Company Name (Line 1)", type: "text", default: "Shrivinayak" },
+          { key: "name_line2", label: "Company Name (Line 2)", type: "text", default: "Industries" },
+          { key: "alt", label: "Logo Alt Text", type: "text", default: "Shrivinayak Industries" },
+        ],
+      },
+    ],
+  },
   home: {
     label: "Homepage",
     sections: [
