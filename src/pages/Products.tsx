@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import { useCmsPage } from "@/hooks/useCmsPage";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const defaults: Record<string, Record<string, string>> = {
   hero: { title: "Products Gallery", image: "/images/products-1.png" },
@@ -13,7 +15,26 @@ const defaults: Record<string, Record<string, string>> = {
 
 const Products = () => {
   const { get } = useCmsPage("products", defaults);
-  const products = Array.from({ length: 10 }, (_, i) => get("gallery", `product_${i + 1}_image`)).filter(Boolean);
+  const [extraImages, setExtraImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("site_content")
+      .select("content_key, content_value")
+      .eq("page", "products")
+      .eq("section", "gallery")
+      .then(({ data }) => {
+        const baseKeys = new Set(Array.from({ length: 10 }, (_, i) => `product_${i + 1}_image`));
+        const extras = (data ?? [])
+          .filter((d) => !baseKeys.has(d.content_key) && d.content_value)
+          .sort((a, b) => a.content_key.localeCompare(b.content_key))
+          .map((d) => d.content_value as string);
+        setExtraImages(extras);
+      });
+  }, []);
+
+  const baseProducts = Array.from({ length: 10 }, (_, i) => get("gallery", `product_${i + 1}_image`)).filter(Boolean);
+  const products = [...baseProducts, ...extraImages];
 
   return (
     <Layout>
