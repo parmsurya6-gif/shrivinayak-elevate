@@ -30,6 +30,20 @@ interface SectionDef {
 
 // Define the page structure with DEFAULT values from current hardcoded content
 const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> = {
+  navbar: {
+    label: "Navbar / Brand",
+    sections: [
+      {
+        key: "brand", label: "Logo & Company Name",
+        fields: [
+          { key: "logo", label: "Logo Image", type: "image", default: "/images/logo.jpg" },
+          { key: "name_line1", label: "Company Name (Line 1)", type: "text", default: "Shrivinayak" },
+          { key: "name_line2", label: "Company Name (Line 2)", type: "text", default: "Industries" },
+          { key: "alt", label: "Logo Alt Text", type: "text", default: "Shrivinayak Industries" },
+        ],
+      },
+    ],
+  },
   home: {
     label: "Homepage",
     sections: [
@@ -325,18 +339,49 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
       {
         key: "sections", label: "Facility Sections",
         fields: [
-          { key: "sec_1_title", label: "Section 1 Title", type: "text", default: "CNC Machining Center" },
-          { key: "sec_1_desc", label: "Section 1 Description", type: "textarea", default: "Our CNC machining center houses multiple high-precision lathes capable of producing complex components." },
-          { key: "sec_1_image_1", label: "Section 1 Image 1", type: "image", default: "/images/cnc-section.jpg" },
-          { key: "sec_2_title", label: "Section 2 Title", type: "text", default: "VMC Machining Center" },
-          { key: "sec_2_desc", label: "Section 2 Description", type: "textarea", default: "Our vertical machining centers handle milling, drilling, and tapping operations with exceptional accuracy." },
-          { key: "sec_2_image_1", label: "Section 2 Image 1", type: "image", default: "/images/vmc-section.jpg" },
-          { key: "sec_3_title", label: "Section 3 Title", type: "text", default: "Welding Station" },
-          { key: "sec_3_desc", label: "Section 3 Description", type: "textarea", default: "Dedicated CO2 welding stations with trained and certified operators." },
-          { key: "sec_3_image_1", label: "Section 3 Image 1", type: "image", default: "/images/welding.jpg" },
-          { key: "sec_4_title", label: "Section 4 Title", type: "text", default: "Quality Lab" },
-          { key: "sec_4_desc", label: "Section 4 Description", type: "textarea", default: "Fully equipped quality laboratory with CMM, profile projectors, and calibrated gauges." },
-          { key: "sec_4_image_1", label: "Section 4 Image 1", type: "image", default: "/images/quality-lab.jpg" },
+          { key: "sec_1_title", label: "Section 1 Title", type: "text", default: "CNC Machining Section" },
+          { key: "sec_1_desc", label: "Section 1 Description", type: "textarea", default: "15 CNC machines for high-precision turning operations and complex component manufacturing." },
+          { key: "sec_1_image_1", label: "Section 1 Image", type: "image", default: "/images/cnc-section.jpg" },
+
+          { key: "sec_2_title", label: "Section 2 Title", type: "text", default: "Traub Machines" },
+          { key: "sec_2_desc", label: "Section 2 Description", type: "textarea", default: "12 Traub machines for high-volume precision turning of fasteners and small components." },
+          { key: "sec_2_image_1", label: "Section 2 Image", type: "image", default: "/images/traub-section.jpg" },
+
+          { key: "sec_3_title", label: "Section 3 Title", type: "text", default: "VMC Section" },
+          { key: "sec_3_desc", label: "Section 3 Description", type: "textarea", default: "7 VMC machines (3-axis & 4-axis) for complex milling operations." },
+          { key: "sec_3_image_1", label: "Section 3 Image", type: "image", default: "/images/vmc-section.jpg" },
+
+          { key: "sec_4_title", label: "Section 4 Title", type: "text", default: "Cutting Section" },
+          { key: "sec_4_desc", label: "Section 4 Description", type: "textarea", default: "CNC circular saw and bandsaw machines for accurate raw material cutting." },
+          { key: "sec_4_image_1", label: "Section 4 Image", type: "image", default: "/images/cutting-machine.jpg" },
+
+          { key: "sec_5_title", label: "Section 5 Title", type: "text", default: "Oxy-Profile Cutting Machines" },
+          { key: "sec_5_desc", label: "Section 5 Description", type: "textarea", default: "Dedicated oxy-profile cutting machines for clean and accurate plate cutting." },
+          { key: "sec_5_image_1", label: "Section 5 Image", type: "image", default: "/images/oxy-cutting.jpg" },
+
+          { key: "sec_6_title", label: "Section 6 Title", type: "text", default: "Welding Section" },
+          { key: "sec_6_desc", label: "Section 6 Description", type: "textarea", default: "4 CO2 welding machines for robust welded assemblies." },
+          { key: "sec_6_image_1", label: "Section 6 Image", type: "image", default: "/images/welding.jpg" },
+
+          { key: "sec_7_title", label: "Section 7 Title", type: "text", default: "Wire Cutting Section" },
+          { key: "sec_7_desc", label: "Section 7 Description", type: "textarea", default: "Precision wire EDM machines for tooling and intricate component profiles." },
+          { key: "sec_7_image_1", label: "Section 7 Image", type: "image", default: "/images/wire-cutting.jpg" },
+
+          { key: "sec_8_title", label: "Section 8 Title", type: "text", default: "3-Axis Pipe Bending Machines" },
+          { key: "sec_8_desc", label: "Section 8 Description", type: "textarea", default: "3-axis pipe bending machines for accurate and repeatable bent pipe assemblies." },
+          { key: "sec_8_image_1", label: "Section 8 Image", type: "image", default: "/images/pipe-bending.jpg" },
+
+          { key: "sec_9_title", label: "Section 9 Title", type: "text", default: "Quality Lab" },
+          { key: "sec_9_desc", label: "Section 9 Description", type: "textarea", default: "Fully equipped with Hardness Tester, Trimos Height Gauge, Vision Measuring Machine, and more." },
+          { key: "sec_9_image_1", label: "Section 9 Image", type: "image", default: "/images/quality-lab.jpg" },
+
+          { key: "sec_10_title", label: "Section 10 Title", type: "text", default: "Inspection Area" },
+          { key: "sec_10_desc", label: "Section 10 Description", type: "textarea", default: "Final inspection tables with Quality Gate 02 for 100% inspection." },
+          { key: "sec_10_image_1", label: "Section 10 Image", type: "image", default: "/images/final-inspection.jpg" },
+
+          { key: "sec_11_title", label: "Section 11 Title", type: "text", default: "Power Backup" },
+          { key: "sec_11_desc", label: "Section 11 Description", type: "textarea", default: "250 KVA DG Set ensuring uninterrupted production." },
+          { key: "sec_11_image_1", label: "Section 11 Image", type: "image", default: "/images/power-backup.png" },
         ],
       },
     ],
@@ -502,6 +547,7 @@ const ContentManager = () => {
   const [showRawEditor, setShowRawEditor] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [seedingAll, setSeedingAll] = useState(false);
+  const [extraFields, setExtraFields] = useState<Record<string, FieldDef[]>>({});
   const [newItem, setNewItem] = useState({ page: "", section: "", content_key: "", content_value: "", content_type: "text" });
 
   const load = async () => {
@@ -525,6 +571,26 @@ const ContentManager = () => {
       vals[`${item.page}|${item.section}|${item.content_key}`] = item.content_value ?? "";
     });
     setLocalValues(vals);
+
+    // Build extras: DB rows for known sections whose keys are not in PAGE_STRUCTURE
+    const extras: Record<string, FieldDef[]> = {};
+    for (const item of loaded) {
+      const page = PAGE_STRUCTURE[item.page];
+      if (!page) continue;
+      const section = page.sections.find(s => s.key === item.section);
+      if (!section) continue;
+      if (section.fields.some(f => f.key === item.content_key)) continue;
+      const sid = `${item.page}|${item.section}`;
+      extras[sid] = extras[sid] || [];
+      if (!extras[sid].some(f => f.key === item.content_key)) {
+        extras[sid].push({
+          key: item.content_key,
+          label: item.content_key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+          type: item.content_type === "image" ? "image" : "text",
+        });
+      }
+    }
+    setExtraFields(extras);
     setLoading(false);
   };
 
@@ -579,7 +645,8 @@ const ContentManager = () => {
     let errors = 0;
     for (const [pageKey, pageDef] of Object.entries(PAGE_STRUCTURE)) {
       for (const section of pageDef.sections) {
-        for (const field of section.fields) {
+        const fields = [...section.fields, ...(extraFields[`${pageKey}|${section.key}`] ?? [])];
+        for (const field of fields) {
           const value = getFieldValue(pageKey, section.key, field.key);
           if (!value) continue;
           const contentType = field.type === "image" ? "image" : "text";
@@ -614,6 +681,31 @@ const ContentManager = () => {
   };
 
   const pageKeys = Object.keys(PAGE_STRUCTURE);
+
+  const getSectionFields = (pageKey: string, section: SectionDef): FieldDef[] => {
+    const extras = extraFields[`${pageKey}|${section.key}`] ?? [];
+    return [...section.fields, ...extras];
+  };
+
+  const addGalleryImage = (pageKey: string, sectionKey: string) => {
+    const sid = `${pageKey}|${sectionKey}`;
+    const existing = [
+      ...(PAGE_STRUCTURE[pageKey].sections.find(s => s.key === sectionKey)?.fields ?? []),
+      ...(extraFields[sid] ?? []),
+    ];
+    const nums = existing
+      .map(f => f.key.match(/^product_(\d+)_image$/))
+      .filter(Boolean)
+      .map(m => parseInt(m![1], 10));
+    const next = (nums.length ? Math.max(...nums) : 0) + 1;
+    const key = `product_${next}_image`;
+    setExtraFields(prev => ({
+      ...prev,
+      [sid]: [...(prev[sid] ?? []), { key, label: `Product ${next} Image`, type: "image" }],
+    }));
+    setLocalValues(prev => ({ ...prev, [`${pageKey}|${sectionKey}|${key}`]: "" }));
+    toast.success(`Added new image slot: ${key}`);
+  };
 
   return (
     <AdminLayout>
@@ -724,7 +816,9 @@ const ContentManager = () => {
               {PAGE_STRUCTURE[pageKey].sections.map(section => {
                 const sectionId = `${pageKey}-${section.key}`;
                 const isExpanded = expandedSections[sectionId] !== false;
-                const savedCount = section.fields.filter(f => isFieldSaved(pageKey, section.key, f.key)).length;
+                const sectionFields = getSectionFields(pageKey, section);
+                const savedCount = sectionFields.filter(f => isFieldSaved(pageKey, section.key, f.key)).length;
+                const isProductGallery = pageKey === "products" && section.key === "gallery";
 
                 return (
                   <div key={sectionId} className="bg-card rounded-xl border border-border overflow-hidden">
@@ -736,23 +830,33 @@ const ContentManager = () => {
                         {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                         <h3 className="font-display font-bold text-base">{section.label}</h3>
                         <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded">
-                          {savedCount}/{section.fields.length} saved
+                          {savedCount}/{sectionFields.length} saved
                         </span>
                       </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          saveSection(pageKey, section.key, section.fields);
-                        }}
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-medium hover:bg-accent/90 transition-colors"
-                      >
-                        <Save size={14} /> Save Section
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {isProductGallery && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); addGalleryImage(pageKey, section.key); }}
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
+                          >
+                            <Plus size={14} /> Add Image
+                          </button>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            saveSection(pageKey, section.key, sectionFields);
+                          }}
+                          className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-lg bg-accent text-accent-foreground text-xs md:text-sm font-medium hover:bg-accent/90 transition-colors"
+                        >
+                          <Save size={14} /> Save Section
+                        </button>
+                      </div>
                     </button>
 
                     {isExpanded && (
                       <div className="px-5 pb-5 space-y-5 border-t border-border pt-5">
-                        {section.fields.map(field => {
+                        {sectionFields.map(field => {
                           const saved = isFieldSaved(pageKey, section.key, field.key);
                           return (
                             <div key={field.key}>

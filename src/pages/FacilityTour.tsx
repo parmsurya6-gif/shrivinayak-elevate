@@ -4,11 +4,14 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { useCmsPage } from "@/hooks/useCmsPage";
 
 const defaultSections = [
-  { title: "Machining Area", desc: "15 CNC machines and 12 Traub machines for high-volume precision turning.", images: ["/images/cnc-section.jpg", "/images/traub-section.jpg"] },
+  { title: "CNC Machining Section", desc: "15 CNC machines for high-precision turning operations and complex component manufacturing.", images: ["/images/cnc-section.jpg"] },
+  { title: "Traub Machines", desc: "12 Traub machines for high-volume precision turning of fasteners and small components.", images: ["/images/traub-section.jpg"] },
   { title: "VMC Section", desc: "7 VMC machines (3-axis & 4-axis) for complex milling operations.", images: ["/images/vmc-section.jpg"] },
-  { title: "Cutting Section", desc: "CNC circular saw, bandsaw, and oxy-profile cutting machines.", images: ["/images/cutting-machine.jpg", "/images/bandsaw.jpg", "/images/oxy-cutting.jpg"] },
+  { title: "Cutting Section", desc: "CNC circular saw and bandsaw machines for accurate raw material cutting.", images: ["/images/cutting-machine.jpg", "/images/bandsaw.jpg"] },
+  { title: "Oxy-Profile Cutting Machines", desc: "Dedicated oxy-profile cutting machines for clean and accurate plate cutting.", images: ["/images/oxy-cutting.jpg"] },
   { title: "Welding Section", desc: "4 CO2 welding machines for robust welded assemblies.", images: ["/images/welding.jpg"] },
-  { title: "Wire Cutting & Pipe Bending", desc: "Precision wire EDM and 3-axis pipe bending machines.", images: ["/images/wire-cutting.jpg", "/images/pipe-bending.jpg"] },
+  { title: "Wire Cutting Section", desc: "Precision wire EDM machines for tooling and intricate component profiles.", images: ["/images/wire-cutting.jpg"] },
+  { title: "3-Axis Pipe Bending Machines", desc: "3-axis pipe bending machines for accurate and repeatable bent pipe assemblies.", images: ["/images/pipe-bending.jpg"] },
   { title: "Quality Lab", desc: "Fully equipped with Hardness Tester, Trimos Height Gauge, Vision Measuring Machine, and more.", images: ["/images/quality-lab.jpg", "/images/quality-lab-2.jpg", "/images/quality-lab-3.jpg"] },
   { title: "Inspection Area", desc: "Final inspection tables with Quality Gate 02 for 100% inspection.", images: ["/images/final-inspection.jpg", "/images/quality-lab-4.jpg"] },
   { title: "Power Backup", desc: "250 KVA DG Set ensuring uninterrupted production.", images: ["/images/power-backup.png"] },
