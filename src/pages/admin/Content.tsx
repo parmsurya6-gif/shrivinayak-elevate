@@ -645,7 +645,8 @@ const ContentManager = () => {
     let errors = 0;
     for (const [pageKey, pageDef] of Object.entries(PAGE_STRUCTURE)) {
       for (const section of pageDef.sections) {
-        for (const field of section.fields) {
+        const fields = [...section.fields, ...(extraFields[`${pageKey}|${section.key}`] ?? [])];
+        for (const field of fields) {
           const value = getFieldValue(pageKey, section.key, field.key);
           if (!value) continue;
           const contentType = field.type === "image" ? "image" : "text";
