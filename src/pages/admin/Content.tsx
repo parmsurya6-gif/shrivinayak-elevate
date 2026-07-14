@@ -270,7 +270,7 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
     ],
   },
   industries: {
-    label: "Industries",
+    label: "Future Expansion",
     sections: [
       {
         key: "hero", label: "Hero Banner",
@@ -297,7 +297,7 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
     ],
   },
   clients: {
-    label: "Clients",
+    label: "Awards & Clients",
     sections: [
       {
         key: "hero", label: "Hero Banner",
@@ -307,7 +307,26 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
         ],
       },
       {
-        key: "awards", label: "Awards & Achievements",
+        key: "certifications", label: "Certifications (4 tiles)",
+        fields: [
+          { key: "section_tagline", label: "Section Tagline", type: "text", default: "Quality Standards" },
+          { key: "section_title", label: "Section Title", type: "text", default: "Certifications" },
+          { key: "cert_1_title", label: "Certification 1 Title", type: "text", default: "ISO 9001:2015" },
+          { key: "cert_1_desc", label: "Certification 1 Description", type: "textarea", default: "Certified Quality Management System ensuring consistent product quality." },
+          { key: "cert_1_image", label: "Certification 1 Image", type: "image", default: "/images/logo-badge.png" },
+          { key: "cert_2_title", label: "Certification 2 Title", type: "text", default: "VDA 6.3" },
+          { key: "cert_2_desc", label: "Certification 2 Description", type: "textarea", default: "Currently preparing for VDA 6.3 certification for process audits." },
+          { key: "cert_2_image", label: "Certification 2 Image", type: "image", default: "/images/logo-badge.png" },
+          { key: "cert_3_title", label: "Certification 3 Title", type: "text", default: "IATF 16949:2016" },
+          { key: "cert_3_desc", label: "Certification 3 Description", type: "textarea", default: "Preparing for IATF 16949 automotive quality management certification." },
+          { key: "cert_3_image", label: "Certification 3 Image", type: "image", default: "/images/logo-badge.png" },
+          { key: "cert_4_title", label: "Certification 4 Title", type: "text", default: "Additional Certification" },
+          { key: "cert_4_desc", label: "Certification 4 Description", type: "textarea", default: "Add details about this certification in the admin panel." },
+          { key: "cert_4_image", label: "Certification 4 Image", type: "image", default: "/images/logo-badge.png" },
+        ],
+      },
+      {
+        key: "awards", label: "Awards & Achievements (4 tiles)",
         fields: [
           { key: "award_1_title", label: "Award 1 Title", type: "text", default: "Best Quality Performance Award" },
           { key: "award_1_image", label: "Award 1 Image", type: "image", default: "/images/award-real-1.jpg" },
@@ -317,10 +336,6 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
           { key: "award_3_image", label: "Award 3 Image", type: "image", default: "/images/award-real-3.jpg" },
           { key: "award_4_title", label: "Award 4 Title", type: "text", default: "Best Supplier Trophy" },
           { key: "award_4_image", label: "Award 4 Image", type: "image", default: "/images/award-real-4.jpg" },
-          { key: "award_5_title", label: "Award 5 Title", type: "text", default: "Certificate of Appreciation" },
-          { key: "award_5_image", label: "Award 5 Image", type: "image", default: "/images/award-real-5.jpg" },
-          { key: "award_6_title", label: "Award 6 Title", type: "text", default: "Appreciation Certificate" },
-          { key: "award_6_image", label: "Award 6 Image", type: "image", default: "/images/award-real-6.jpg" },
         ],
       },
     ],
@@ -342,46 +357,72 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
           { key: "sec_1_title", label: "Section 1 Title", type: "text", default: "CNC Machining Section" },
           { key: "sec_1_desc", label: "Section 1 Description", type: "textarea", default: "15 CNC machines for high-precision turning operations and complex component manufacturing." },
           { key: "sec_1_image_1", label: "Section 1 Image", type: "image", default: "/images/cnc-section.jpg" },
+          { key: "sec_1_order", label: "Section 1 Display Order", type: "text", default: "1" },
 
           { key: "sec_2_title", label: "Section 2 Title", type: "text", default: "Traub Machines" },
           { key: "sec_2_desc", label: "Section 2 Description", type: "textarea", default: "12 Traub machines for high-volume precision turning of fasteners and small components." },
           { key: "sec_2_image_1", label: "Section 2 Image", type: "image", default: "/images/traub-section.jpg" },
+          { key: "sec_2_order", label: "Section 2 Display Order", type: "text", default: "2" },
 
           { key: "sec_3_title", label: "Section 3 Title", type: "text", default: "VMC Section" },
           { key: "sec_3_desc", label: "Section 3 Description", type: "textarea", default: "7 VMC machines (3-axis & 4-axis) for complex milling operations." },
           { key: "sec_3_image_1", label: "Section 3 Image", type: "image", default: "/images/vmc-section.jpg" },
+          { key: "sec_3_order", label: "Section 3 Display Order", type: "text", default: "3" },
 
           { key: "sec_4_title", label: "Section 4 Title", type: "text", default: "Cutting Section" },
           { key: "sec_4_desc", label: "Section 4 Description", type: "textarea", default: "CNC circular saw and bandsaw machines for accurate raw material cutting." },
           { key: "sec_4_image_1", label: "Section 4 Image", type: "image", default: "/images/cutting-machine.jpg" },
+          { key: "sec_4_order", label: "Section 4 Display Order", type: "text", default: "4" },
 
           { key: "sec_5_title", label: "Section 5 Title", type: "text", default: "Oxy-Profile Cutting Machines" },
           { key: "sec_5_desc", label: "Section 5 Description", type: "textarea", default: "Dedicated oxy-profile cutting machines for clean and accurate plate cutting." },
           { key: "sec_5_image_1", label: "Section 5 Image", type: "image", default: "/images/oxy-cutting.jpg" },
+          { key: "sec_5_order", label: "Section 5 Display Order", type: "text", default: "5" },
 
           { key: "sec_6_title", label: "Section 6 Title", type: "text", default: "Welding Section" },
           { key: "sec_6_desc", label: "Section 6 Description", type: "textarea", default: "4 CO2 welding machines for robust welded assemblies." },
           { key: "sec_6_image_1", label: "Section 6 Image", type: "image", default: "/images/welding.jpg" },
+          { key: "sec_6_order", label: "Section 6 Display Order", type: "text", default: "6" },
 
           { key: "sec_7_title", label: "Section 7 Title", type: "text", default: "Wire Cutting Section" },
           { key: "sec_7_desc", label: "Section 7 Description", type: "textarea", default: "Precision wire EDM machines for tooling and intricate component profiles." },
           { key: "sec_7_image_1", label: "Section 7 Image", type: "image", default: "/images/wire-cutting.jpg" },
+          { key: "sec_7_order", label: "Section 7 Display Order", type: "text", default: "7" },
 
           { key: "sec_8_title", label: "Section 8 Title", type: "text", default: "3-Axis Pipe Bending Machines" },
           { key: "sec_8_desc", label: "Section 8 Description", type: "textarea", default: "3-axis pipe bending machines for accurate and repeatable bent pipe assemblies." },
           { key: "sec_8_image_1", label: "Section 8 Image", type: "image", default: "/images/pipe-bending.jpg" },
+          { key: "sec_8_order", label: "Section 8 Display Order", type: "text", default: "8" },
 
           { key: "sec_9_title", label: "Section 9 Title", type: "text", default: "Quality Lab" },
           { key: "sec_9_desc", label: "Section 9 Description", type: "textarea", default: "Fully equipped with Hardness Tester, Trimos Height Gauge, Vision Measuring Machine, and more." },
           { key: "sec_9_image_1", label: "Section 9 Image", type: "image", default: "/images/quality-lab.jpg" },
+          { key: "sec_9_order", label: "Section 9 Display Order", type: "text", default: "9" },
 
           { key: "sec_10_title", label: "Section 10 Title", type: "text", default: "Inspection Area" },
           { key: "sec_10_desc", label: "Section 10 Description", type: "textarea", default: "Final inspection tables with Quality Gate 02 for 100% inspection." },
           { key: "sec_10_image_1", label: "Section 10 Image", type: "image", default: "/images/final-inspection.jpg" },
+          { key: "sec_10_order", label: "Section 10 Display Order", type: "text", default: "10" },
 
           { key: "sec_11_title", label: "Section 11 Title", type: "text", default: "Power Backup" },
           { key: "sec_11_desc", label: "Section 11 Description", type: "textarea", default: "250 KVA DG Set ensuring uninterrupted production." },
           { key: "sec_11_image_1", label: "Section 11 Image", type: "image", default: "/images/power-backup.png" },
+          { key: "sec_11_order", label: "Section 11 Display Order", type: "text", default: "11" },
+
+          { key: "sec_12_title", label: "Section 12 Title", type: "text", default: "" },
+          { key: "sec_12_desc", label: "Section 12 Description", type: "textarea", default: "" },
+          { key: "sec_12_image_1", label: "Section 12 Image", type: "image", default: "" },
+          { key: "sec_12_order", label: "Section 12 Display Order", type: "text", default: "12" },
+
+          { key: "sec_13_title", label: "Section 13 Title", type: "text", default: "" },
+          { key: "sec_13_desc", label: "Section 13 Description", type: "textarea", default: "" },
+          { key: "sec_13_image_1", label: "Section 13 Image", type: "image", default: "" },
+          { key: "sec_13_order", label: "Section 13 Display Order", type: "text", default: "13" },
+
+          { key: "sec_14_title", label: "Section 14 Title", type: "text", default: "" },
+          { key: "sec_14_desc", label: "Section 14 Description", type: "textarea", default: "" },
+          { key: "sec_14_image_1", label: "Section 14 Image", type: "image", default: "" },
+          { key: "sec_14_order", label: "Section 14 Display Order", type: "text", default: "14" },
         ],
       },
     ],

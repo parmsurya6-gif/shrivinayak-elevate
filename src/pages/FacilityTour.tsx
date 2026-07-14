@@ -15,6 +15,9 @@ const defaultSections = [
   { title: "Quality Lab", desc: "Fully equipped with Hardness Tester, Trimos Height Gauge, Vision Measuring Machine, and more.", images: ["/images/quality-lab.jpg", "/images/quality-lab-2.jpg", "/images/quality-lab-3.jpg"] },
   { title: "Inspection Area", desc: "Final inspection tables with Quality Gate 02 for 100% inspection.", images: ["/images/final-inspection.jpg", "/images/quality-lab-4.jpg"] },
   { title: "Power Backup", desc: "250 KVA DG Set ensuring uninterrupted production.", images: ["/images/power-backup.png"] },
+  { title: "", desc: "", images: [""] },
+  { title: "", desc: "", images: [""] },
+  { title: "", desc: "", images: [""] },
 ];
 
 const defaults: Record<string, Record<string, string>> = {
@@ -24,12 +27,26 @@ const defaults: Record<string, Record<string, string>> = {
       [`sec_${i+1}_title`, s.title],
       [`sec_${i+1}_desc`, s.desc],
       [`sec_${i+1}_image_1`, s.images[0] || ""],
+      [`sec_${i+1}_order`, String(i + 1)],
     ])
   ),
 };
 
 const FacilityTour = () => {
   const { get } = useCmsPage("facility", defaults);
+
+  const sections = defaultSections
+    .map((sec, i) => {
+      const n = i + 1;
+      const title = get("sections", `sec_${n}_title`) || sec.title;
+      const desc = get("sections", `sec_${n}_desc`) || sec.desc;
+      const img = get("sections", `sec_${n}_image_1`) || sec.images[0] || "";
+      const orderStr = get("sections", `sec_${n}_order`);
+      const order = orderStr ? parseInt(orderStr, 10) : n;
+      return { n, title, desc, img, order };
+    })
+    .filter((s) => s.title || s.img)
+    .sort((a, b) => a.order - b.order);
 
   return (
     <Layout>
@@ -51,24 +68,24 @@ const FacilityTour = () => {
 
       <section className="section-padding bg-background">
         <div className="max-w-7xl mx-auto space-y-12 md:space-y-20">
-          {defaultSections.map((sec, i) => (
-            <div key={i} className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+          {sections.map((sec, i) => (
+            <div key={sec.n} className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
               <ScrollReveal direction={i % 2 === 0 ? "left" : "right"}>
                 <div className={i % 2 === 1 ? "lg:order-2" : ""}>
                   <motion.span className="text-accent text-sm font-semibold uppercase tracking-widest inline-block" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
                     Section {String(i + 1).padStart(2, "0")}
                   </motion.span>
-                  <h2 className="font-display font-bold text-xl md:text-3xl mt-2 mb-4">{get("sections", `sec_${i+1}_title`) || sec.title}</h2>
-                  <p className="text-muted-foreground leading-relaxed">{get("sections", `sec_${i+1}_desc`) || sec.desc}</p>
+                  <h2 className="font-display font-bold text-xl md:text-3xl mt-2 mb-4">{sec.title}</h2>
+                  <p className="text-muted-foreground leading-relaxed">{sec.desc}</p>
                 </div>
               </ScrollReveal>
               <ScrollReveal direction={i % 2 === 0 ? "right" : "left"} delay={0.15}>
-                <div className={`grid ${sec.images.length > 1 ? "grid-cols-2" : "grid-cols-1"} gap-3 md:gap-4 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
-                  {sec.images.map((img, j) => (
-                    <motion.div key={j} className={`rounded-lg overflow-hidden ${sec.images.length === 3 && j === 0 ? "col-span-2" : ""}`} whileHover={{ y: -6, scale: 1.02 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-                      <motion.img src={img} alt={sec.title} className="image-cover h-40 md:h-56 w-full" whileHover={{ scale: 1.1 }} transition={{ duration: 0.5 }} />
+                <div className={`grid grid-cols-1 gap-3 md:gap-4 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
+                  {sec.img && (
+                    <motion.div className="rounded-lg overflow-hidden" whileHover={{ y: -6, scale: 1.02 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+                      <motion.img src={sec.img} alt={sec.title} className="image-cover h-40 md:h-56 w-full" whileHover={{ scale: 1.1 }} transition={{ duration: 0.5 }} />
                     </motion.div>
-                  ))}
+                  )}
                 </div>
               </ScrollReveal>
             </div>

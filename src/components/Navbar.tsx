@@ -16,10 +16,9 @@ const navbarDefaults: Record<string, Record<string, string>> = {
 
 const exploreItems = [
   { label: "Capabilities", path: "/capabilities" },
-  { label: "Products", path: "/products" },
   { label: "Facility Tour", path: "/facility" },
-  { label: "Industries", path: "/industries" },
-  { label: "Clients", path: "/clients" },
+  { label: "Future Expansion", path: "/industries" },
+  { label: "Awards & Clients", path: "/clients" },
 ];
 
 const Navbar = () => {
@@ -45,6 +44,7 @@ const Navbar = () => {
   ];
 
   const afterExplore = [
+    { label: "Product Gallery", path: "/products" },
     { label: "Careers", path: "/careers" },
     { label: "Contact Us", path: "/contact" },
   ];
