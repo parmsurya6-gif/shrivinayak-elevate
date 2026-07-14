@@ -6,22 +6,33 @@ import { useCmsPage } from "@/hooks/useCmsPage";
 
 const defaults: Record<string, Record<string, string>> = {
   hero: { title: "Clients & Certifications", image: "/images/award-real-1.jpg" },
+  certifications: {
+    section_title: "Certifications",
+    section_tagline: "Quality Standards",
+    cert_1_title: "ISO 9001:2015", cert_1_desc: "Certified Quality Management System ensuring consistent product quality.", cert_1_image: "/images/logo-badge.png",
+    cert_2_title: "VDA 6.3", cert_2_desc: "Currently preparing for VDA 6.3 certification for process audits.", cert_2_image: "/images/logo-badge.png",
+    cert_3_title: "IATF 16949:2016", cert_3_desc: "Preparing for IATF 16949 automotive quality management certification.", cert_3_image: "/images/logo-badge.png",
+    cert_4_title: "Additional Certification", cert_4_desc: "Add details about this certification in the admin panel.", cert_4_image: "/images/logo-badge.png",
+  },
   awards: {
     award_1_title: "Best Quality Performance Award", award_1_image: "/images/award-real-1.jpg",
     award_2_title: "Best Quality Trophy", award_2_image: "/images/award-real-2.jpg",
     award_3_title: "Best Supplier Award", award_3_image: "/images/award-real-3.jpg",
     award_4_title: "Best Supplier Trophy", award_4_image: "/images/award-real-4.jpg",
-    award_5_title: "Certificate of Appreciation", award_5_image: "/images/award-real-5.jpg",
-    award_6_title: "Appreciation Certificate", award_6_image: "/images/award-real-6.jpg",
   },
 };
 
 const Clients = () => {
   const { get } = useCmsPage("clients", defaults);
-  const awards = [1, 2, 3, 4, 5, 6].map(i => ({
+  const awards = [1, 2, 3, 4].map(i => ({
     title: get("awards", `award_${i}_title`),
     img: get("awards", `award_${i}_image`),
   }));
+  const certs = [1, 2, 3, 4].map(i => ({
+    title: get("certifications", `cert_${i}_title`),
+    desc: get("certifications", `cert_${i}_desc`),
+    img: get("certifications", `cert_${i}_image`),
+  })).filter(c => c.title);
 
   return (
     <Layout>
@@ -45,20 +56,16 @@ const Clients = () => {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-12">
-              <span className="text-accent text-sm font-semibold uppercase tracking-widest">Quality Standards</span>
-              <h2 className="section-title mt-3">Certifications</h2>
+              <span className="text-accent text-sm font-semibold uppercase tracking-widest">{get("certifications", "section_tagline")}</span>
+              <h2 className="section-title mt-3">{get("certifications", "section_title")}</h2>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            {[
-              { title: "ISO 9001:2015", desc: "Certified Quality Management System ensuring consistent product quality." },
-              { title: "VDA 6.3", desc: "Currently preparing for VDA 6.3 certification for process audits." },
-              { title: "IATF 16949:2016", desc: "Preparing for IATF 16949 automotive quality management certification." },
-            ].map((cert, i) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {certs.map((cert, i) => (
               <ScrollReveal key={cert.title} delay={i * 0.15} direction="scale">
                 <motion.div className="bg-card rounded-xl p-6 md:p-8 border border-border text-center" whileHover={{ y: -8, boxShadow: "0 20px 40px -15px hsl(var(--accent) / 0.15)" }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
                   <motion.div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4" whileHover={{ rotate: 10, scale: 1.1 }}>
-                    <img src="/images/logo-badge.png" alt="Certification" className="h-10 w-auto" />
+                    <img src={cert.img} alt={cert.title} className="h-10 w-auto object-contain" />
                   </motion.div>
                   <h3 className="font-display font-bold text-lg md:text-xl mb-2">{cert.title}</h3>
                   <p className="text-muted-foreground text-sm">{cert.desc}</p>
@@ -77,7 +84,7 @@ const Clients = () => {
               <h2 className="section-title mt-3">Awards & Achievements</h2>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {awards.filter(a => a.img).map((award, i) => (
               <ScrollReveal key={i} delay={i * 0.1} direction="scale">
                 <motion.div className="card-industrial" whileHover={{ y: -10, scale: 1.02, boxShadow: "0 20px 40px -15px hsl(var(--accent) / 0.2)" }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
