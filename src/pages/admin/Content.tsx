@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Plus, Save, Trash2, Upload, Image, Eye, X, ChevronDown, ChevronRight, Database } from "lucide-react";
 import { uploadSiteImage, upsertContent, deleteContent } from "@/hooks/useSiteContent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LogoCropperDialog from "@/components/admin/LogoCropperDialog";
 
 interface ContentItem {
   id: string;
@@ -497,13 +498,29 @@ const ImageUploadField = ({
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null);
+  const [pendingExt, setPendingExt] = useState<string>("png");
+  // Suggested aspect: lock the navbar/footer logo to 1:1 by default; free everywhere else.
+  const suggestedAspect = section === "brand" && fieldKey === "logo" ? 1 : undefined;
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const openCropperFromFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setPendingExt(file.name.split(".").pop() || "png");
+    const reader = new FileReader();
+    reader.onload = () => setCropSrc(String(reader.result));
+    reader.readAsDataURL(file);
+    // reset so choosing the same file twice still fires change
+    e.target.value = "";
+  };
+
+  const handleCropped = async (blob: Blob) => {
+    setCropSrc(null);
     setUploading(true);
-    const path = `${page}/${section}/${fieldKey}-${Date.now()}.${file.name.split(".").pop()}`;
-    const url = await uploadSiteImage(file, path);
+    const ext = "png"; // canvas exports PNG; keep transparent-safe
+    const path = `${page}/${section}/${fieldKey}-${Date.now()}.${ext}`;
+    const asFile = new File([blob], `${fieldKey}.${ext}`, { type: "image/png" });
+    const url = await uploadSiteImage(asFile, path);
     if (url) {
       onUpload(url);
       toast.success("Image uploaded");
@@ -511,6 +528,7 @@ const ImageUploadField = ({
       toast.error("Upload failed");
     }
     setUploading(false);
+    void pendingExt;
   };
 
   return (
@@ -520,7 +538,7 @@ const ImageUploadField = ({
         <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-lg border border-border bg-secondary/50 overflow-hidden flex-shrink-0">
           {value ? (
             <>
-              <img src={value} alt={label} className="w-full h-full object-cover" />
+              <img src={value} alt={label} className="w-full h-full object-contain" />
               <button
                 onClick={() => setPreview(true)}
                 className="absolute inset-0 bg-foreground/0 hover:bg-foreground/30 transition-colors flex items-center justify-center"
@@ -549,7 +567,7 @@ const ImageUploadField = ({
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-accent/10 text-accent text-xs font-medium hover:bg-accent/20 transition-colors disabled:opacity-50"
             >
               <Upload size={14} />
-              {uploading ? "Uploading..." : "Upload"}
+              {uploading ? "Uploading..." : "Upload & Crop"}
             </button>
             {value && (
               <button
@@ -560,8 +578,13 @@ const ImageUploadField = ({
               </button>
             )}
           </div>
+          {suggestedAspect === 1 && (
+            <p className="text-[11px] text-muted-foreground">
+              Tip: logo is locked to 1:1 by default for crisp display in the navbar/footer. Choose "Free" in the cropper to override.
+            </p>
+          )}
         </div>
-        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={openCropperFromFile} />
       </div>
 
       {preview && value && (
@@ -573,6 +596,15 @@ const ImageUploadField = ({
             <img src={value} alt={label} className="max-w-full max-h-[80vh] object-contain" />
           </div>
         </div>
+      )}
+
+      {cropSrc && (
+        <LogoCropperDialog
+          imageSrc={cropSrc}
+          aspect={suggestedAspect}
+          onCancel={() => setCropSrc(null)}
+          onConfirm={handleCropped}
+        />
       )}
     </div>
   );
