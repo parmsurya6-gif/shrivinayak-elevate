@@ -52,23 +52,23 @@ const Navbar = () => {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            <Link to="/" className="flex items-center gap-3">
-              <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-10 lg:h-12 w-auto" />
-              <div className="hidden sm:block">
-                <p className="font-display font-bold text-foreground text-sm lg:text-base leading-tight">{get("brand", "name_line1")}</p>
-                <p className="font-display font-bold text-accent text-xs lg:text-sm leading-tight">{get("brand", "name_line2")}</p>
+        <div className="w-full mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20 gap-2">
+            <Link to="/" className="flex items-center gap-2 min-w-0 flex-shrink">
+              <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-8 sm:h-10 lg:h-12 w-auto flex-shrink-0" />
+              <div className="hidden sm:block min-w-0">
+                <p className="font-display font-bold text-foreground text-xs lg:text-base leading-tight truncate">{get("brand", "name_line1")}</p>
+                <p className="font-display font-bold text-accent text-[10px] lg:text-sm leading-tight truncate">{get("brand", "name_line2")}</p>
               </div>
             </Link>
 
             {/* Desktop */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden xl:flex items-center gap-0.5 flex-wrap justify-end">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-2.5 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${
                     location.pathname === item.path ? "nav-link-active bg-secondary" : "nav-link"
                   }`}
                 >
@@ -82,7 +82,7 @@ const Navbar = () => {
                 onMouseEnter={() => setExploreOpen(true)}
                 onMouseLeave={() => setExploreOpen(false)}
               >
-                <button className="px-3 py-2 rounded-md text-sm font-medium nav-link flex items-center gap-1 transition-colors">
+                <button className="px-2.5 py-2 rounded-md text-sm font-medium nav-link flex items-center gap-1 whitespace-nowrap transition-colors">
                   Explore <ChevronDown size={14} className={`transition-transform ${exploreOpen ? "rotate-180" : ""}`} />
                 </button>
                 {exploreOpen && (
@@ -106,7 +106,7 @@ const Navbar = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-2.5 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${
                     location.pathname === item.path ? "nav-link-active bg-secondary" : "nav-link"
                   }`}
                 >
@@ -114,14 +114,14 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <button onClick={() => setQuoteOpen(true)} className="btn-primary ml-4 text-xs">
+              <button onClick={() => setQuoteOpen(true)} className="btn-primary ml-2 text-xs whitespace-nowrap">
                 Request Quote
               </button>
 
               {user ? (
                 <div className="flex items-center gap-2 ml-2">
                   {isAdmin && (
-                    <Link to="/admin" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-semibold bg-accent text-accent-foreground hover:opacity-90 transition-opacity">
+                    <Link to="/admin" className="inline-flex items-center gap-1.5 px-2.5 py-2 rounded-md text-xs font-semibold bg-accent text-accent-foreground hover:opacity-90 transition-opacity whitespace-nowrap">
                       <LayoutDashboard size={14} /> Admin Dashboard
                     </Link>
                   )}
@@ -137,7 +137,7 @@ const Navbar = () => {
             </div>
 
             {/* Mobile toggle */}
-            <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-foreground">
+            <button onClick={() => setIsOpen(!isOpen)} className="xl:hidden p-2 text-foreground flex-shrink-0">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -145,7 +145,7 @@ const Navbar = () => {
 
         {/* Mobile menu */}
         {isOpen && (
-          <div className="lg:hidden bg-card border-t border-border">
+          <div className="xl:hidden bg-card border-t border-border max-h-[calc(100vh-3.5rem)] overflow-y-auto">
             <div className="px-4 py-4 space-y-1">
               {navItems.map((item) => (
                 <Link

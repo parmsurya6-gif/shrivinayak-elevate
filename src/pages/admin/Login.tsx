@@ -3,9 +3,20 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
+import { useCmsPage } from "@/hooks/useCmsPage";
+
+const navbarDefaults: Record<string, Record<string, string>> = {
+  brand: {
+    logo: "/images/logo.jpg",
+    name_line1: "Shrivinayak",
+    name_line2: "Industries",
+    alt: "Shrivinayak Industries",
+  },
+};
 
 const AdminLogin = () => {
   const { user, isAdmin, loading, signIn } = useAuth();
+  const { get } = useCmsPage("navbar", navbarDefaults);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -36,7 +47,7 @@ const AdminLogin = () => {
     <div className="min-h-screen flex items-center justify-center bg-secondary/30 px-4">
       <div className="bg-card rounded-xl p-8 border border-border shadow-lg max-w-md w-full">
         <div className="text-center mb-8">
-          <img src="/images/logo.jpg" alt="Logo" className="h-16 mx-auto mb-4 rounded" />
+          <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-16 mx-auto mb-4 rounded" />
           <h1 className="font-display font-bold text-2xl">Admin Login</h1>
           <p className="text-muted-foreground text-sm mt-1">Sign in to manage your website</p>
         </div>
