@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,6 +30,26 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { user, isAdmin, signOut } = useAuth();
   const { get } = useCmsPage("navbar", navbarDefaults);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Auto-measure navbar height (bar + open mobile menu) and expose as --nav-h
+  // so <Layout> can offset main content and the mobile menu never overlaps.
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+    const write = () => {
+      const h = el.getBoundingClientRect().height;
+      document.documentElement.style.setProperty("--nav-h", `${Math.ceil(h)}px`);
+    };
+    write();
+    const ro = new ResizeObserver(write);
+    ro.observe(el);
+    window.addEventListener("resize", write);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", write);
+    };
+  }, [isOpen, mobileExploreOpen]);
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -51,11 +71,15 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 border-b border-border shadow-sm">
+      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-card/95 border-b border-border shadow-sm">
         <div className="w-full mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20 gap-2">
             <Link to="/" className="flex items-center gap-2 min-w-0 flex-shrink">
-              <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-8 sm:h-10 lg:h-12 w-auto flex-shrink-0" />
+              <img
+                src={get("brand", "logo")}
+                alt={get("brand", "alt")}
+                className="h-8 sm:h-10 lg:h-12 w-auto max-w-[140px] object-contain flex-shrink-0"
+              />
               <div className="hidden sm:block min-w-0">
                 <p className="font-display font-bold text-foreground text-xs lg:text-base leading-tight truncate">{get("brand", "name_line1")}</p>
                 <p className="font-display font-bold text-accent text-[10px] lg:text-sm leading-tight truncate">{get("brand", "name_line2")}</p>
