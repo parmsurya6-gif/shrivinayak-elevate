@@ -22,6 +22,7 @@ import Applications from "./pages/admin/Applications";
 import ContentManager from "./pages/admin/Content";
 import UserManager from "./pages/admin/Users";
 import AdminJobs from "./pages/admin/Jobs";
+import FaviconSync from "./components/FaviconSync";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <FaviconSync />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/company" element={<Company />} />

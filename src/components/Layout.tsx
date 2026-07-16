@@ -5,7 +5,10 @@ import Footer from "./Footer";
 const Layout = ({ children }: { children: ReactNode }) => (
   <div className="min-h-screen flex flex-col">
     <Navbar />
-    <main className="flex-1 pt-16 lg:pt-20">{children}</main>
+    {/* Navbar exposes its measured height as --nav-h so mobile menu never overlaps content */}
+    <main className="flex-1" style={{ paddingTop: "var(--nav-h, 4rem)" }}>
+      {children}
+    </main>
     <Footer />
   </div>
 );
