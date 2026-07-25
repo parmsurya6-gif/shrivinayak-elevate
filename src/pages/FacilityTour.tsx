@@ -3,22 +3,27 @@ import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import { useCmsPage } from "@/hooks/useCmsPage";
 
-const defaultSections = [
-  { title: "CNC Machining Section", desc: "15 CNC machines for high-precision turning operations and complex component manufacturing.", images: ["/images/cnc-section.jpg"] },
-  { title: "Traub Machines", desc: "12 Traub machines for high-volume precision turning of fasteners and small components.", images: ["/images/traub-section.jpg"] },
-  { title: "VMC Section", desc: "7 VMC machines (3-axis & 4-axis) for complex milling operations.", images: ["/images/vmc-section.jpg"] },
-  { title: "Cutting Section", desc: "CNC circular saw and bandsaw machines for accurate raw material cutting.", images: ["/images/cutting-machine.jpg", "/images/bandsaw.jpg"] },
+const defaultSections: { title: string; desc: string; images: string[] }[] = [
+  { title: "VMC", desc: "Vertical Machining Centers (3-axis & 4-axis) for complex milling operations.", images: ["/images/vmc-section.jpg"] },
+  { title: "CNC", desc: "15 CNC machines for high-precision turning operations and complex component manufacturing.", images: ["/images/cnc-section.jpg"] },
+  { title: "CNC Polyturn Milling Machine", desc: "CNC Polyturn milling machines for high-precision multi-axis machining.", images: ["/images/cnc-section.jpg"] },
+  { title: "Wire Cutting Machine", desc: "Precision wire EDM machines for tooling and intricate component profiles.", images: ["/images/wire-cutting.jpg"] },
+  { title: "CNC Circular Saw Cutting (up to 80 mm)", desc: "CNC circular saw cutting up to 80 mm for accurate raw material preparation.", images: ["/images/cutting-machine.jpg"] },
+  { title: "CNC Bandsaw Cutting Machine upto 300 MM", desc: "CNC bandsaw cutting up to 300 mm for large raw material stock.", images: ["/images/bandsaw.jpg"] },
+  { title: "CO₂ Welding Machines (4 units)", desc: "4 CO₂ welding machines for robust welded assemblies.", images: ["/images/welding.jpg"] },
   { title: "Oxy-Profile Cutting Machines", desc: "Dedicated oxy-profile cutting machines for clean and accurate plate cutting.", images: ["/images/oxy-cutting.jpg"] },
-  { title: "Welding Section", desc: "4 CO2 welding machines for robust welded assemblies.", images: ["/images/welding.jpg"] },
-  { title: "Wire Cutting Section", desc: "Precision wire EDM machines for tooling and intricate component profiles.", images: ["/images/wire-cutting.jpg"] },
-  { title: "3-Axis Pipe Bending Machines", desc: "3-axis pipe bending machines for accurate and repeatable bent pipe assemblies.", images: ["/images/pipe-bending.jpg"] },
-  { title: "Quality Lab", desc: "Fully equipped with Hardness Tester, Trimos Height Gauge, Vision Measuring Machine, and more.", images: ["/images/quality-lab.jpg", "/images/quality-lab-2.jpg", "/images/quality-lab-3.jpg"] },
-  { title: "Inspection Area", desc: "Final inspection tables with Quality Gate 02 for 100% inspection.", images: ["/images/final-inspection.jpg", "/images/quality-lab-4.jpg"] },
-  { title: "Power Backup", desc: "250 KVA DG Set ensuring uninterrupted production.", images: ["/images/power-backup.png"] },
-  { title: "", desc: "", images: [""] },
-  { title: "", desc: "", images: [""] },
-  { title: "", desc: "", images: [""] },
+  { title: "Pipe Bending & 3-Axis Bending Machine", desc: "3-axis pipe bending machines for accurate and repeatable bent pipe assemblies.", images: ["/images/pipe-bending.jpg"] },
+  { title: "Hydraulic Press Machine (30-ton capacity)", desc: "30-ton hydraulic press machine for pressing and forming operations.", images: [""] },
+  { title: "CNC Traub Machines", desc: "CNC Traub machines for advanced multi-tool precision turning.", images: ["/images/traub-section.jpg"] },
+  { title: "Traub Machines", desc: "12 Traub machines for high-volume precision turning of fasteners and small components.", images: ["/images/traub-section.jpg"] },
+  { title: "Drill Cum Tapping Section (7 Nos.)", desc: "7 drill-cum-tapping machines for secondary machining operations.", images: [""] },
+  { title: "Milling Machines (5 Nos.)", desc: "5 milling machines for conventional milling operations.", images: [""] },
+  { title: "250 KVA DG Set Power Backup", desc: "250 KVA DG set ensuring uninterrupted production.", images: ["/images/power-backup.png"] },
+  { title: "180 KVA Solar Power Backup", desc: "180 KVA solar power backup supporting our green energy commitment.", images: [""] },
 ];
+
+// Support dynamic sections added via the admin CMS beyond the defaults (up to 40 total).
+const MAX_SECTIONS = 40;
 
 const defaults: Record<string, Record<string, string>> = {
   hero: { title: "Virtual Factory Tour", subtitle: "Step inside our 22,000+ sq.ft. manufacturing facility", image: "/images/hero-factory.jpg" },
@@ -35,12 +40,12 @@ const defaults: Record<string, Record<string, string>> = {
 const FacilityTour = () => {
   const { get } = useCmsPage("facility", defaults);
 
-  const sections = defaultSections
-    .map((sec, i) => {
-      const n = i + 1;
-      const title = get("sections", `sec_${n}_title`) || sec.title;
-      const desc = get("sections", `sec_${n}_desc`) || sec.desc;
-      const img = get("sections", `sec_${n}_image_1`) || sec.images[0] || "";
+  const sections = Array.from({ length: MAX_SECTIONS }, (_, i) => i + 1)
+    .map((n) => {
+      const def = defaultSections[n - 1];
+      const title = get("sections", `sec_${n}_title`) || def?.title || "";
+      const desc = get("sections", `sec_${n}_desc`) || def?.desc || "";
+      const img = get("sections", `sec_${n}_image_1`) || def?.images[0] || "";
       const orderStr = get("sections", `sec_${n}_order`);
       const order = orderStr ? parseInt(orderStr, 10) : n;
       return { n, title, desc, img, order };

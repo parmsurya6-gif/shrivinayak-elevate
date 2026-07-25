@@ -826,6 +826,34 @@ const ContentManager = () => {
     toast.success(`Added new image slot: ${key}`);
   };
 
+  const addFacilitySection = (pageKey: string, sectionKey: string) => {
+    const sid = `${pageKey}|${sectionKey}`;
+    const existing = [
+      ...(PAGE_STRUCTURE[pageKey].sections.find(s => s.key === sectionKey)?.fields ?? []),
+      ...(extraFields[sid] ?? []),
+    ];
+    const nums = existing
+      .map(f => f.key.match(/^sec_(\d+)_title$/))
+      .filter(Boolean)
+      .map(m => parseInt(m![1], 10));
+    const n = (nums.length ? Math.max(...nums) : 0) + 1;
+    const newFields: FieldDef[] = [
+      { key: `sec_${n}_title`, label: `Section ${n} Title`, type: "text" },
+      { key: `sec_${n}_desc`, label: `Section ${n} Description`, type: "textarea" },
+      { key: `sec_${n}_image_1`, label: `Section ${n} Image`, type: "image" },
+      { key: `sec_${n}_order`, label: `Section ${n} Display Order`, type: "text" },
+    ];
+    setExtraFields(prev => ({ ...prev, [sid]: [...(prev[sid] ?? []), ...newFields] }));
+    setLocalValues(prev => ({
+      ...prev,
+      [`${pageKey}|${sectionKey}|sec_${n}_title`]: "",
+      [`${pageKey}|${sectionKey}|sec_${n}_desc`]: "",
+      [`${pageKey}|${sectionKey}|sec_${n}_image_1`]: "",
+      [`${pageKey}|${sectionKey}|sec_${n}_order`]: String(n),
+    }));
+    toast.success(`Added Section ${n}`);
+  };
+
   return (
     <AdminLayout>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -938,6 +966,7 @@ const ContentManager = () => {
                 const sectionFields = getSectionFields(pageKey, section);
                 const savedCount = sectionFields.filter(f => isFieldSaved(pageKey, section.key, f.key)).length;
                 const isProductGallery = pageKey === "products" && section.key === "gallery";
+                const isFacilitySections = pageKey === "facility" && section.key === "sections";
 
                 return (
                   <div key={sectionId} className="bg-card rounded-xl border border-border overflow-hidden">
@@ -959,6 +988,14 @@ const ContentManager = () => {
                             className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
                           >
                             <Plus size={14} /> Add Image
+                          </button>
+                        )}
+                        {isFacilitySections && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); addFacilitySection(pageKey, section.key); }}
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
+                          >
+                            <Plus size={14} /> Add Section
                           </button>
                         )}
                         <button
