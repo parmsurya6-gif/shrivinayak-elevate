@@ -11,6 +11,11 @@ const navbarDefaults: Record<string, Record<string, string>> = {
     name_line1: "Shrivinayak",
     name_line2: "Industries",
     alt: "Shrivinayak Industries",
+    description: "Precision Machined Components & Assemblies",
+    bg_from: "#dbeafe",
+    bg_to: "#93c5fd",
+    name_color: "#b91c1c",
+    desc_color: "#1e3a8a",
   },
 };
 
@@ -71,18 +76,38 @@ const Navbar = () => {
 
   return (
     <>
-      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-card/95 border-b border-border shadow-sm">
+      <nav
+        ref={navRef}
+        className="fixed top-0 left-0 right-0 z-50 border-b border-border shadow-sm"
+        style={{
+          background: `linear-gradient(90deg, ${get("brand", "bg_from") || "#dbeafe"} 0%, ${get("brand", "bg_to") || "#93c5fd"} 100%)`,
+        }}
+      >
         <div className="w-full mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
-          <div className="flex items-center justify-between h-14 sm:h-16 lg:h-20 gap-2">
+          <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24 gap-2">
             <Link to="/" className="flex items-center gap-2 min-w-0 flex-shrink">
               <img
                 src={get("brand", "logo")}
                 alt={get("brand", "alt")}
-                className="h-8 sm:h-10 lg:h-12 w-auto max-w-[140px] object-contain flex-shrink-0"
+                className="h-10 sm:h-12 lg:h-16 w-auto max-w-[80px] object-contain flex-shrink-0 drop-shadow-sm"
               />
               <div className="hidden sm:block min-w-0">
-                <p className="font-display font-bold text-foreground text-xs lg:text-base leading-tight truncate">{get("brand", "name_line1")}</p>
-                <p className="font-display font-bold text-accent text-[10px] lg:text-sm leading-tight truncate">{get("brand", "name_line2")}</p>
+                <p
+                  className="font-display font-extrabold tracking-wide text-base lg:text-2xl leading-tight truncate"
+                  style={{
+                    color: get("brand", "name_color") || "#b91c1c",
+                    fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif",
+                    letterSpacing: "0.05em",
+                  }}
+                >
+                  {`${get("brand", "name_line1")} ${get("brand", "name_line2")}`.trim()}
+                </p>
+                <p
+                  className="italic text-[10px] lg:text-xs leading-tight truncate mt-0.5"
+                  style={{ color: get("brand", "desc_color") || "#1e3a8a" }}
+                >
+                  {get("brand", "description")}
+                </p>
               </div>
             </Link>
 

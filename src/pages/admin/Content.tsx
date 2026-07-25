@@ -41,6 +41,42 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
           { key: "name_line1", label: "Company Name (Line 1)", type: "text", default: "Shrivinayak" },
           { key: "name_line2", label: "Company Name (Line 2)", type: "text", default: "Industries" },
           { key: "alt", label: "Logo Alt Text", type: "text", default: "Shrivinayak Industries" },
+          { key: "description", label: "Tagline / Description (italic)", type: "text", default: "Precision Machined Components & Assemblies" },
+          { key: "bg_from", label: "Navbar Gradient Start (hex)", type: "text", default: "#dbeafe" },
+          { key: "bg_to", label: "Navbar Gradient End (hex)", type: "text", default: "#93c5fd" },
+          { key: "name_color", label: "Company Name Color (hex)", type: "text", default: "#b91c1c" },
+          { key: "desc_color", label: "Description Color (hex)", type: "text", default: "#1e3a8a" },
+        ],
+      },
+    ],
+  },
+  footer: {
+    label: "Footer",
+    sections: [
+      {
+        key: "about", label: "About Text",
+        fields: [
+          { key: "tagline", label: "About Tagline", type: "textarea", default: "ISO 9001:2015 certified manufacturer of precision machined components, welded assemblies & fasteners." },
+        ],
+      },
+      {
+        key: "contact", label: "Contact Details",
+        fields: [
+          { key: "address", label: "Address", type: "textarea", default: "GAT NO. 679/2/2, Plot No. 21-24, Chakan-Alandi Road, Pune, Maharashtra 411062, India" },
+          { key: "phone_1", label: "Mobile Number 1", type: "text", default: "+91 9273665000" },
+          { key: "phone_2", label: "Mobile Number 2", type: "text", default: "+91 9881196066" },
+          { key: "email", label: "Email", type: "text", default: "svipune.5000@gmail.com" },
+          { key: "map_url", label: "Google Maps URL", type: "text", default: "https://maps.google.com/?q=GAT+NO+679/2/2+Plot+No+21-24+Chakan-Alandi+Road+Pune+Maharashtra+411062+India" },
+          { key: "location_icon_color", label: "Location Icon Color (hex)", type: "text", default: "#f97316" },
+        ],
+      },
+      {
+        key: "social", label: "Social Links",
+        fields: [
+          { key: "facebook", label: "Facebook URL", type: "text", default: "https://facebook.com" },
+          { key: "instagram", label: "Instagram URL", type: "text", default: "https://instagram.com" },
+          { key: "linkedin", label: "LinkedIn URL", type: "text", default: "https://linkedin.com" },
+          { key: "twitter", label: "Twitter URL", type: "text", default: "https://twitter.com" },
         ],
       },
     ],
