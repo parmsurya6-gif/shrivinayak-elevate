@@ -54,12 +54,18 @@ export type Database = {
         Row: {
           cover_letter: string | null
           created_at: string
+          current_designation: string | null
           email: string
+          expected_salary: string | null
           experience: string | null
+          gender: string | null
           id: string
           name: string
           phone: string | null
           position: string
+          previous_company: string | null
+          previous_salary: string | null
+          qualification: string | null
           resume_url: string | null
           status: string
           updated_at: string
@@ -67,12 +73,18 @@ export type Database = {
         Insert: {
           cover_letter?: string | null
           created_at?: string
+          current_designation?: string | null
           email: string
+          expected_salary?: string | null
           experience?: string | null
+          gender?: string | null
           id?: string
           name: string
           phone?: string | null
           position: string
+          previous_company?: string | null
+          previous_salary?: string | null
+          qualification?: string | null
           resume_url?: string | null
           status?: string
           updated_at?: string
@@ -80,12 +92,18 @@ export type Database = {
         Update: {
           cover_letter?: string | null
           created_at?: string
+          current_designation?: string | null
           email?: string
+          expected_salary?: string | null
           experience?: string | null
+          gender?: string | null
           id?: string
           name?: string
           phone?: string | null
           position?: string
+          previous_company?: string | null
+          previous_salary?: string | null
+          qualification?: string | null
           resume_url?: string | null
           status?: string
           updated_at?: string
@@ -97,9 +115,12 @@ export type Database = {
           created_at: string
           department: string
           description: string
+          experience_required: string | null
           id: string
           is_active: boolean
           location: string
+          requirements: string | null
+          salary_range: string | null
           title: string
           type: string
           updated_at: string
@@ -108,9 +129,12 @@ export type Database = {
           created_at?: string
           department: string
           description: string
+          experience_required?: string | null
           id?: string
           is_active?: boolean
           location?: string
+          requirements?: string | null
+          salary_range?: string | null
           title: string
           type?: string
           updated_at?: string
@@ -119,9 +143,12 @@ export type Database = {
           created_at?: string
           department?: string
           description?: string
+          experience_required?: string | null
           id?: string
           is_active?: boolean
           location?: string
+          requirements?: string | null
+          salary_range?: string | null
           title?: string
           type?: string
           updated_at?: string
