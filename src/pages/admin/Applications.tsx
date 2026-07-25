@@ -14,6 +14,13 @@ interface Application {
   cover_letter: string | null;
   status: string;
   created_at: string;
+  qualification?: string | null;
+  gender?: string | null;
+  expected_salary?: string | null;
+  previous_salary?: string | null;
+  previous_company?: string | null;
+  current_designation?: string | null;
+  resume_url?: string | null;
 }
 
 const Applications = () => {
@@ -104,6 +111,18 @@ const Applications = () => {
               <p><span className="font-medium">Email:</span> {selected.email}</p>
               <p><span className="font-medium">Phone:</span> {selected.phone || "N/A"}</p>
               <p><span className="font-medium">Experience:</span> {selected.experience || "N/A"}</p>
+              <p><span className="font-medium">Qualification:</span> {selected.qualification || "N/A"}</p>
+              <p><span className="font-medium">Gender:</span> {selected.gender || "N/A"}</p>
+              <p><span className="font-medium">Expected Salary:</span> {selected.expected_salary || "N/A"}</p>
+              <p><span className="font-medium">Previous Salary:</span> {selected.previous_salary || "N/A"}</p>
+              <p><span className="font-medium">Previous Company:</span> {selected.previous_company || "N/A"}</p>
+              <p><span className="font-medium">Current Designation:</span> {selected.current_designation || "N/A"}</p>
+              {selected.resume_url && (
+                <p>
+                  <span className="font-medium">Resume:</span>{" "}
+                  <a href={selected.resume_url} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Download / View</a>
+                </p>
+              )}
               <p><span className="font-medium">Cover Letter:</span></p>
               <p className="text-muted-foreground bg-secondary/50 rounded-lg p-3">{selected.cover_letter || "None provided"}</p>
             </div>
