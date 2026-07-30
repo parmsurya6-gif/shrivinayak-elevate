@@ -90,32 +90,84 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="relative h-[90vh] min-h-[500px] md:min-h-[600px] flex items-center">
+      <section className="relative min-h-[88vh] md:min-h-[94vh] flex items-end md:items-center overflow-hidden">
         <HeroSlider />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-3xl">
-            <motion.div className="flex items-center gap-2 mb-4 md:mb-6" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 }}>
-              <div className="h-px w-8 md:w-12 bg-highlight" />
-              <span className="text-highlight text-xs md:text-sm font-semibold uppercase tracking-widest">{get("hero", "tagline")}</span>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-24 md:pb-0 pt-24 md:pt-32">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-4xl">
+            <motion.div
+              className="inline-flex items-center gap-2.5 mb-5 md:mb-8 rounded-full border border-primary-foreground/25 bg-primary-foreground/5 px-4 py-1.5"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-highlight opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-highlight" />
+              </span>
+              <span className="text-primary-foreground text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em]">
+                {get("hero", "tagline")}
+              </span>
             </motion.div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-extrabold text-primary-foreground leading-tight mb-4 md:mb-6">
+
+            <h1 className="text-[2.15rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-8xl font-display font-extrabold text-primary-foreground tracking-[-0.03em] mb-5 md:mb-8">
               <AnimatedText text={get("hero", "title_line1")} delay={0.4} />
               <br />
-              <span className="text-highlight"><AnimatedText text={get("hero", "title_line2")} delay={0.8} /></span>
+              <span className="bg-gradient-to-r from-highlight via-highlight to-primary-foreground bg-clip-text text-transparent">
+                <AnimatedText text={get("hero", "title_line2")} delay={0.8} />
+              </span>
             </h1>
-            <motion.p className="text-base md:text-xl text-primary-foreground/80 mb-6 md:mb-10 max-w-xl" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.2 }}>
-              {get("hero", "subtitle")}
-            </motion.p>
-            <motion.div className="flex flex-col sm:flex-row gap-3 md:gap-4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 1.5 }}>
-              <Link to="/capabilities" className="inline-flex items-center justify-center gap-2 bg-highlight text-accent-foreground px-6 md:px-8 py-3 md:py-4 rounded-md font-semibold text-sm hover:opacity-90 transition-opacity">
-                {get("hero", "cta_1_text")} <ArrowRight size={18} />
+
+            <motion.div
+              className="flex items-start gap-4 md:gap-6 max-w-2xl mb-8 md:mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+            >
+              <span className="hidden md:block mt-2 h-16 w-px bg-highlight/70 shrink-0" />
+              <p className="text-base md:text-lg text-primary-foreground/75 leading-relaxed">
+                {get("hero", "subtitle")}
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="flex flex-col sm:flex-row gap-3 md:gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.5 }}
+            >
+              <Link
+                to="/capabilities"
+                className="group inline-flex items-center justify-center gap-2.5 bg-highlight text-accent-foreground px-7 md:px-9 py-4 rounded-full font-semibold text-sm tracking-wide hover:shadow-[0_16px_40px_-12px_hsl(var(--highlight)/0.7)] hover:-translate-y-0.5 transition-all duration-300"
+              >
+                {get("hero", "cta_1_text")}
+                <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-              <Link to="/contact" className="inline-flex items-center justify-center gap-2 border-2 border-primary-foreground/40 text-primary-foreground px-6 md:px-8 py-3 md:py-4 rounded-md font-semibold text-sm hover:bg-primary-foreground/10 transition-all">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 border border-primary-foreground/35 text-primary-foreground px-7 md:px-9 py-4 rounded-full font-semibold text-sm tracking-wide hover:bg-primary-foreground/10 hover:border-primary-foreground/60 transition-all duration-300"
+              >
                 {get("hero", "cta_2_text")}
               </Link>
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Scroll cue */}
+        <motion.div
+          className="pointer-events-none absolute bottom-6 left-1/2 hidden md:flex -translate-x-1/2 flex-col items-center gap-2 z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+        >
+          <span className="text-[10px] uppercase tracking-[0.3em] text-primary-foreground/50">Scroll</span>
+          <motion.span
+            className="h-10 w-px bg-gradient-to-b from-highlight to-transparent"
+            animate={{ scaleY: [0.3, 1, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            style={{ transformOrigin: "top" }}
+          />
+        </motion.div>
       </section>
 
       {/* Stats Bar */}
