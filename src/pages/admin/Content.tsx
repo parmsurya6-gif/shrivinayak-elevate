@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import AdminLayout from "@/components/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Plus, Save, Trash2, Upload, Image, Eye, X, ChevronDown, ChevronRight, Database } from "lucide-react";
+import { Plus, Save, Trash2, Upload, Image, Eye, EyeOff, X, ChevronDown, ChevronRight, Database, Pencil } from "lucide-react";
 import { uploadSiteImage, upsertContent, deleteContent } from "@/hooks/useSiteContent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LogoCropperDialog from "@/components/admin/LogoCropperDialog";
@@ -854,6 +854,102 @@ const ContentManager = () => {
     toast.success(`Added Section ${n}`);
   };
 
+  // ---- Facility section group helpers (edit / hide / delete) ----
+  const [openFacilityGroups, setOpenFacilityGroups] = useState<Record<number, boolean>>({});
+
+  const facilityGroups = (fields: FieldDef[]) => {
+    const nums = Array.from(
+      new Set(
+        fields
+          .map(f => f.key.match(/^sec_(\d+)_/))
+          .filter(Boolean)
+          .map(m => parseInt(m![1], 10))
+      )
+    ).sort((a, b) => a - b);
+    return nums.map(n => ({
+      n,
+      fields: fields.filter(f => f.key.startsWith(`sec_${n}_`) && !f.key.endsWith("_hidden") && !f.key.endsWith("_deleted")),
+    }));
+  };
+
+  const setFacilityFlag = async (pageKey: string, sectionKey: string, n: number, flag: "hidden" | "deleted", value: boolean) => {
+    const key = `sec_${n}_${flag}`;
+    setFieldValue(pageKey, sectionKey, key, value ? "true" : "false");
+    const ok = await upsertContent(pageKey, sectionKey, key, value ? "true" : "false", "text");
+    if (!ok) { toast.error("Failed to update section"); return; }
+    toast.success(flag === "hidden" ? (value ? "Section hidden" : "Section visible") : "Section deleted");
+    await load();
+  };
+
+  const deleteFacilitySection = async (pageKey: string, sectionKey: string, n: number) => {
+    if (!confirm(`Delete Section ${n}? It will be removed from the website.`)) return;
+    // Mark deleted so hardcoded frontend defaults stop rendering it,
+    // and clear its stored values.
+    for (const suffix of ["title", "desc", "image_1", "order"]) {
+      await upsertContent(pageKey, sectionKey, `sec_${n}_${suffix}`, "", suffix === "image_1" ? "image" : "text");
+      setFieldValue(pageKey, sectionKey, `sec_${n}_${suffix}`, "");
+    }
+    await setFacilityFlag(pageKey, sectionKey, n, "deleted", true);
+  };
+
+  const renderField = (pageKey: string, sectionKey: string, field: FieldDef) => {
+    const saved = isFieldSaved(pageKey, sectionKey, field.key);
+    return (
+      <div key={field.key}>
+        {field.type === "image" ? (
+          <div>
+            <ImageUploadField
+              value={getFieldValue(pageKey, sectionKey, field.key)}
+              onUpload={(url) => setFieldValue(pageKey, sectionKey, field.key, url)}
+              label={field.label}
+              page={pageKey}
+              section={sectionKey}
+              fieldKey={field.key}
+            />
+            {!saved && <p className="text-[11px] text-amber-600 mt-1">⚠ Default value — click "Save Section" to persist</p>}
+          </div>
+        ) : field.type === "textarea" ? (
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground">{field.label}</label>
+              {!saved && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">default</span>}
+            </div>
+            <textarea
+              value={getFieldValue(pageKey, sectionKey, field.key)}
+              onChange={(e) => setFieldValue(pageKey, sectionKey, field.key, e.target.value)}
+              className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm resize-none"
+              rows={3}
+              placeholder={`Enter ${field.label.toLowerCase()}...`}
+            />
+          </div>
+        ) : (
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-foreground">{field.label}</label>
+              {!saved && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">default</span>}
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={getFieldValue(pageKey, sectionKey, field.key)}
+                onChange={(e) => setFieldValue(pageKey, sectionKey, field.key, e.target.value)}
+                className="flex-1 px-3 py-2 rounded-lg border border-input bg-background text-sm"
+                placeholder={`Enter ${field.label.toLowerCase()}...`}
+              />
+              <button
+                onClick={() => saveField(pageKey, sectionKey, field.key)}
+                disabled={saving[`${pageKey}|${sectionKey}|${field.key}`]}
+                className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
+              >
+                <Save size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <AdminLayout>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -1012,65 +1108,57 @@ const ContentManager = () => {
 
                     {isExpanded && (
                       <div className="px-5 pb-5 space-y-5 border-t border-border pt-5">
-                        {sectionFields.map(field => {
-                          const saved = isFieldSaved(pageKey, section.key, field.key);
-                          return (
-                            <div key={field.key}>
-                              {field.type === "image" ? (
-                                <div>
-                                  <ImageUploadField
-                                    value={getFieldValue(pageKey, section.key, field.key)}
-                                    onUpload={(url) => setFieldValue(pageKey, section.key, field.key, url)}
-                                    label={field.label}
-                                    page={pageKey}
-                                    section={section.key}
-                                    fieldKey={field.key}
-                                  />
-                                  {!saved && (
-                                    <p className="text-[11px] text-amber-600 mt-1">⚠ Default value — click "Save Section" to persist</p>
-                                  )}
-                                </div>
-                              ) : field.type === "textarea" ? (
-                                <div className="space-y-1.5">
-                                  <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-foreground">{field.label}</label>
-                                    {!saved && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">default</span>}
+                        {isFacilitySections
+                          ? facilityGroups(sectionFields)
+                              .filter(g => getFieldValue(pageKey, section.key, `sec_${g.n}_deleted`) !== "true")
+                              .map(group => {
+                                const hidden = getFieldValue(pageKey, section.key, `sec_${group.n}_hidden`) === "true";
+                                const open = openFacilityGroups[group.n] === true;
+                                const title = getFieldValue(pageKey, section.key, `sec_${group.n}_title`) || `Section ${group.n}`;
+                                return (
+                                  <div key={group.n} className={`rounded-lg border border-border ${hidden ? "opacity-60" : ""}`}>
+                                    <div className="flex flex-wrap items-center justify-between gap-2 p-3 bg-secondary/30">
+                                      <div className="flex items-center gap-2 min-w-0">
+                                        <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded">#{getFieldValue(pageKey, section.key, `sec_${group.n}_order`) || group.n}</span>
+                                        <span className="font-medium text-sm truncate">{title}</span>
+                                        {hidden && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">hidden</span>}
+                                      </div>
+                                      <div className="flex items-center gap-1.5">
+                                        <button
+                                          onClick={() => setOpenFacilityGroups(prev => ({ ...prev, [group.n]: !open }))}
+                                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-secondary text-xs font-medium hover:bg-secondary/70"
+                                        >
+                                          <Pencil size={13} /> {open ? "Close" : "Edit"}
+                                        </button>
+                                        <button
+                                          onClick={() => setFacilityFlag(pageKey, section.key, group.n, "hidden", !hidden)}
+                                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-secondary text-xs font-medium hover:bg-secondary/70"
+                                        >
+                                          {hidden ? <Eye size={13} /> : <EyeOff size={13} />} {hidden ? "Show" : "Hide"}
+                                        </button>
+                                        <button
+                                          onClick={() => deleteFacilitySection(pageKey, section.key, group.n)}
+                                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-destructive hover:bg-destructive/10 text-xs font-medium"
+                                        >
+                                          <Trash2 size={13} /> Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                    {open && (
+                                      <div className="p-4 space-y-4 border-t border-border">
+                                        {group.fields.map(field => renderField(pageKey, section.key, field))}
+                                        <button
+                                          onClick={() => saveSection(pageKey, section.key, group.fields)}
+                                          className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-accent-foreground text-xs font-medium hover:bg-accent/90"
+                                        >
+                                          <Save size={14} /> Save Section {group.n}
+                                        </button>
+                                      </div>
+                                    )}
                                   </div>
-                                  <textarea
-                                    value={getFieldValue(pageKey, section.key, field.key)}
-                                    onChange={(e) => setFieldValue(pageKey, section.key, field.key, e.target.value)}
-                                    className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm resize-none"
-                                    rows={3}
-                                    placeholder={`Enter ${field.label.toLowerCase()}...`}
-                                  />
-                                </div>
-                              ) : (
-                                <div className="space-y-1.5">
-                                  <div className="flex items-center gap-2">
-                                    <label className="text-sm font-medium text-foreground">{field.label}</label>
-                                    {!saved && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">default</span>}
-                                  </div>
-                                  <div className="flex gap-2">
-                                    <input
-                                      type="text"
-                                      value={getFieldValue(pageKey, section.key, field.key)}
-                                      onChange={(e) => setFieldValue(pageKey, section.key, field.key, e.target.value)}
-                                      className="flex-1 px-3 py-2 rounded-lg border border-input bg-background text-sm"
-                                      placeholder={`Enter ${field.label.toLowerCase()}...`}
-                                    />
-                                    <button
-                                      onClick={() => saveField(pageKey, section.key, field.key)}
-                                      disabled={saving[`${pageKey}|${section.key}|${field.key}`]}
-                                      className="p-2 rounded-lg bg-accent/10 text-accent hover:bg-accent/20 transition-colors disabled:opacity-50"
-                                    >
-                                      <Save size={16} />
-                                    </button>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
+                                );
+                              })
+                          : sectionFields.map(field => renderField(pageKey, section.key, field))}
                       </div>
                     )}
                   </div>

@@ -48,9 +48,11 @@ const FacilityTour = () => {
       const img = get("sections", `sec_${n}_image_1`) || def?.images[0] || "";
       const orderStr = get("sections", `sec_${n}_order`);
       const order = orderStr ? parseInt(orderStr, 10) : n;
-      return { n, title, desc, img, order };
+      const hidden = get("sections", `sec_${n}_hidden`) === "true";
+      const deleted = get("sections", `sec_${n}_deleted`) === "true";
+      return { n, title, desc, img, order, hidden, deleted };
     })
-    .filter((s) => s.title || s.img)
+    .filter((s) => (s.title || s.img) && !s.hidden && !s.deleted)
     .sort((a, b) => a.order - b.order);
 
   return (

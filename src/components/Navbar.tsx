@@ -96,7 +96,7 @@ const Navbar = () => {
                   className="font-display font-extrabold tracking-wide text-base lg:text-2xl leading-tight truncate"
                   style={{
                     color: get("brand", "name_color") || "#b91c1c",
-                    fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif",
+                    fontFamily: "Algerian, 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif",
                     letterSpacing: "0.05em",
                   }}
                 >

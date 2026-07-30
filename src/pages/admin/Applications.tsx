@@ -3,6 +3,7 @@ import AdminLayout from "@/components/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Trash2, Eye } from "lucide-react";
+import ApplicationTimeline from "@/components/admin/ApplicationTimeline";
 
 interface Application {
   id: string;
@@ -104,7 +105,7 @@ const Applications = () => {
 
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/50 p-4" onClick={() => setSelected(null)}>
-          <div className="bg-card rounded-xl p-6 max-w-lg w-full border border-border shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-card rounded-xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto border border-border shadow-xl" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-display font-bold text-xl mb-4">{selected.name}</h3>
             <div className="space-y-3 text-sm">
               <p><span className="font-medium">Position:</span> {selected.position}</p>
@@ -126,6 +127,7 @@ const Applications = () => {
               <p><span className="font-medium">Cover Letter:</span></p>
               <p className="text-muted-foreground bg-secondary/50 rounded-lg p-3">{selected.cover_letter || "None provided"}</p>
             </div>
+            <ApplicationTimeline applicationId={selected.id} />
             <button onClick={() => setSelected(null)} className="mt-6 btn-primary">Close</button>
           </div>
         </div>
