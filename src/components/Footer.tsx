@@ -49,7 +49,7 @@ const Footer = () => {
             className="font-extrabold text-xl mb-1 tracking-wide"
             style={{
               color: get("brand", "name_color") || "#fca5a5",
-              fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif",
+              fontFamily: "Algerian, 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif",
               letterSpacing: "0.05em",
             }}
           >
