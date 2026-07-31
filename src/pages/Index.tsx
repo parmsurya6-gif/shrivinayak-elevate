@@ -185,6 +185,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Journey / Milestone flowchart */}
+      <JourneyTimeline />
+
       {/* Company Snapshot */}
       <section className="section-padding bg-background">
         <div className="max-w-7xl mx-auto">
