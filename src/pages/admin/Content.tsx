@@ -1150,6 +1150,7 @@ const ContentManager = () => {
                 const savedCount = sectionFields.filter(f => isFieldSaved(pageKey, section.key, f.key)).length;
                 const isProductGallery = pageKey === "products" && section.key === "gallery";
                 const isFacilitySections = pageKey === "facility" && section.key === "sections";
+                const isJourney = pageKey === "home" && section.key === "journey";
 
                 return (
                   <div key={sectionId} className="bg-card rounded-xl border border-border overflow-hidden">
@@ -1179,6 +1180,14 @@ const ContentManager = () => {
                             className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
                           >
                             <Plus size={14} /> Add Section
+                          </button>
+                        )}
+                        {isJourney && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); addJourneyMilestone(pageKey, section.key); }}
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
+                          >
+                            <Plus size={14} /> Add Milestone
                           </button>
                         )}
                         <button
