@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Plus, Save, Trash2, CheckCircle2, Clock, Loader2 } from "lucide-react";
+import { Plus, Save, Trash2, CheckCircle2, Clock, Loader2, GripVertical } from "lucide-react";
 
 export interface TimelineItem {
   id: string;
@@ -25,7 +25,7 @@ const toLocalInput = (iso: string) => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 };
 
-const statusStyles: Record<string, string> = {
+const nodeStyles: Record<string, string> = {
   done: "bg-accent text-accent-foreground border-accent",
   in_progress: "bg-amber-100 text-amber-700 border-amber-300",
   pending: "bg-secondary text-muted-foreground border-border",
@@ -36,6 +36,9 @@ const ApplicationTimeline = ({ applicationId }: { applicationId: string }) => {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const overId = useRef<string | null>(null);
 
   const load = useCallback(async () => {
     const { data } = await supabase
@@ -90,10 +93,35 @@ const ApplicationTimeline = ({ applicationId }: { applicationId: string }) => {
     toast.success("Milestone removed");
   };
 
+  const persistOrder = async (ordered: TimelineItem[]) => {
+    await Promise.all(
+      ordered.map((it, idx) =>
+        supabase.from("application_timeline").update({ position: idx }).eq("id", it.id)
+      )
+    );
+    toast.success("Order updated");
+  };
+
+  const handleDrop = () => {
+    const from = items.findIndex(i => i.id === dragId);
+    const to = items.findIndex(i => i.id === overId.current);
+    setDragId(null);
+    overId.current = null;
+    if (from < 0 || to < 0 || from === to) return;
+    const next = [...items];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    setItems(next.map((it, idx) => ({ ...it, position: idx })));
+    persistOrder(next);
+  };
+
   return (
     <div className="mt-6 border-t border-border pt-5">
       <div className="flex items-center justify-between mb-4">
-        <h4 className="font-display font-bold text-base">Progress Timeline</h4>
+        <div>
+          <h4 className="font-display font-bold text-base">Progress Flowchart</h4>
+          <p className="text-xs text-muted-foreground">Drag milestones to reorder. Click a node to edit.</p>
+        </div>
         <button
           onClick={addMilestone}
           disabled={adding}
@@ -108,61 +136,91 @@ const ApplicationTimeline = ({ applicationId }: { applicationId: string }) => {
       ) : items.length === 0 ? (
         <p className="text-sm text-muted-foreground">No milestones yet. Add the first step of this application's journey.</p>
       ) : (
-        <ol className="relative space-y-4 pl-6">
-          <span className="absolute left-[9px] top-2 bottom-2 w-px bg-border" aria-hidden />
-          {items.map((item) => (
-            <li key={item.id} className="relative">
-              <span
-                className={`absolute -left-6 top-2 flex h-[19px] w-[19px] items-center justify-center rounded-full border ${statusStyles[item.status] ?? statusStyles.pending}`}
+        <ol className="relative">
+          <span className="absolute left-1/2 top-2 bottom-2 w-px -translate-x-1/2 bg-border" aria-hidden />
+          {items.map((item, idx) => {
+            const left = idx % 2 === 0;
+            const open = openId === item.id;
+            return (
+              <li
+                key={item.id}
+                draggable
+                onDragStart={() => setDragId(item.id)}
+                onDragOver={(e) => { e.preventDefault(); overId.current = item.id; }}
+                onDrop={handleDrop}
+                onDragEnd={() => setDragId(null)}
+                className={`relative py-3 grid grid-cols-2 gap-6 ${dragId === item.id ? "opacity-50" : ""}`}
               >
-                {item.status === "done" ? <CheckCircle2 size={12} /> : item.status === "in_progress" ? <Loader2 size={12} /> : <Clock size={12} />}
-              </span>
-              <div className="rounded-lg border border-border p-3 space-y-2 bg-background">
-                <input
-                  type="text"
-                  value={item.title}
-                  onChange={(e) => patch(item.id, { title: e.target.value })}
-                  placeholder="Milestone title (e.g. Interview Scheduled)"
-                  className="w-full px-2.5 py-1.5 rounded-md border border-input bg-background text-sm font-medium"
-                />
-                <textarea
-                  value={item.description ?? ""}
-                  onChange={(e) => patch(item.id, { description: e.target.value })}
-                  rows={2}
-                  placeholder="Notes (optional)"
-                  className="w-full px-2.5 py-1.5 rounded-md border border-input bg-background text-sm resize-none"
-                />
-                <div className="flex flex-wrap gap-2">
-                  <input
-                    type="datetime-local"
-                    value={toLocalInput(item.event_at)}
-                    onChange={(e) => patch(item.id, { event_at: e.target.value })}
-                    className="px-2.5 py-1.5 rounded-md border border-input bg-background text-xs"
-                  />
-                  <select
-                    value={item.status}
-                    onChange={(e) => patch(item.id, { status: e.target.value })}
-                    className="px-2.5 py-1.5 rounded-md border border-input bg-background text-xs"
-                  >
-                    {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-                  </select>
+                <div className={left ? "col-start-1 pr-6 text-right" : "col-start-2 pl-6 text-left"}>
                   <button
-                    onClick={() => saveMilestone(item)}
-                    disabled={savingId === item.id}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-accent/10 text-accent text-xs font-medium hover:bg-accent/20 disabled:opacity-50"
+                    onClick={() => setOpenId(open ? null : item.id)}
+                    className="w-full rounded-lg border border-border bg-background p-3 text-left hover:border-accent transition-colors"
                   >
-                    <Save size={13} /> Save
+                    <span className="flex items-center gap-2">
+                      <GripVertical size={14} className="text-muted-foreground cursor-grab shrink-0" />
+                      <span className="font-medium text-sm truncate">{item.title || "Untitled"}</span>
+                    </span>
+                    <span className="block text-[11px] text-muted-foreground mt-1">
+                      {new Date(item.event_at).toLocaleString()} · {STATUSES.find(s => s.value === item.status)?.label}
+                    </span>
                   </button>
-                  <button
-                    onClick={() => deleteMilestone(item.id)}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-md text-destructive text-xs font-medium hover:bg-destructive/10"
-                  >
-                    <Trash2 size={13} /> Delete
-                  </button>
+
+                  {open && (
+                    <div className="mt-2 rounded-lg border border-border p-3 space-y-2 bg-card text-left">
+                      <input
+                        type="text"
+                        value={item.title}
+                        onChange={(e) => patch(item.id, { title: e.target.value })}
+                        placeholder="Milestone title (e.g. Interview Scheduled)"
+                        className="w-full px-2.5 py-1.5 rounded-md border border-input bg-background text-sm font-medium"
+                      />
+                      <textarea
+                        value={item.description ?? ""}
+                        onChange={(e) => patch(item.id, { description: e.target.value })}
+                        rows={2}
+                        placeholder="Notes (optional)"
+                        className="w-full px-2.5 py-1.5 rounded-md border border-input bg-background text-sm resize-none"
+                      />
+                      <div className="flex flex-wrap gap-2">
+                        <input
+                          type="datetime-local"
+                          value={toLocalInput(item.event_at)}
+                          onChange={(e) => patch(item.id, { event_at: e.target.value })}
+                          className="px-2.5 py-1.5 rounded-md border border-input bg-background text-xs"
+                        />
+                        <select
+                          value={item.status}
+                          onChange={(e) => patch(item.id, { status: e.target.value })}
+                          className="px-2.5 py-1.5 rounded-md border border-input bg-background text-xs"
+                        >
+                          {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                        </select>
+                        <button
+                          onClick={() => saveMilestone(item)}
+                          disabled={savingId === item.id}
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-accent/10 text-accent text-xs font-medium hover:bg-accent/20 disabled:opacity-50"
+                        >
+                          <Save size={13} /> Save
+                        </button>
+                        <button
+                          onClick={() => deleteMilestone(item.id)}
+                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-md text-destructive text-xs font-medium hover:bg-destructive/10"
+                        >
+                          <Trash2 size={13} /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </li>
-          ))}
+
+                <span
+                  className={`absolute left-1/2 top-6 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full border ${nodeStyles[item.status] ?? nodeStyles.pending}`}
+                >
+                  {item.status === "done" ? <CheckCircle2 size={13} /> : item.status === "in_progress" ? <Loader2 size={13} /> : <Clock size={13} />}
+                </span>
+              </li>
+            );
+          })}
         </ol>
       )}
     </div>
