@@ -23,6 +23,7 @@ import ContentManager from "./pages/admin/Content";
 import UserManager from "./pages/admin/Users";
 import AdminJobs from "./pages/admin/Jobs";
 import FaviconSync from "./components/FaviconSync";
+import BrandLoader from "./components/BrandLoader";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <FaviconSync />
+          <BrandLoader />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/company" element={<Company />} />
