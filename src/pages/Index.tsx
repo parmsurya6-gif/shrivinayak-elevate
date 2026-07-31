@@ -5,7 +5,8 @@ import Layout from "@/components/Layout";
 import ScrollReveal from "@/components/ScrollReveal";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import ClientLogoScroller from "@/components/ClientLogoScroller";
-import HeroSlider from "@/components/HeroSlider";
+import HeroMedia from "@/components/HeroMedia";
+import JourneyTimeline from "@/components/JourneyTimeline";
 import AnimatedText from "@/components/AnimatedText";
 import { useCmsPage } from "@/hooks/useCmsPage";
 
@@ -17,6 +18,10 @@ const defaults: Record<string, Record<string, string>> = {
     subtitle: "Manufacturer and supplier of precision machined components, welded assemblies & fasteners for global automotive and industrial leaders.",
     cta_1_text: "Explore Capabilities",
     cta_2_text: "Request a Quote",
+    media_video: "",
+    media_image_1: "/images/hero-factory.jpg",
+    media_image_2: "/images/factory-overview.jpg",
+    media_image_3: "/images/cnc-section.jpg",
   },
   stats: {
     stat_1_value: "100", stat_1_suffix: "+", stat_1_label: "Employees",
