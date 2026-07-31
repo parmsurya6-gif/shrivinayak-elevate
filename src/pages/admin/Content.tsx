@@ -1189,6 +1189,37 @@ const ContentManager = () => {
                                   </div>
                                 );
                               })
+                          : isProductGallery
+                          ? (
+                            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {galleryNumbers(sectionFields)
+                                .filter(n => getFieldValue(pageKey, section.key, `product_${n}_deleted`) !== "true")
+                                .map(n => {
+                                  const hidden = getFieldValue(pageKey, section.key, `product_${n}_hidden`) === "true";
+                                  const field = sectionFields.find(f => f.key === `product_${n}_image`)!;
+                                  return (
+                                    <div key={n} className={`rounded-lg border border-border p-3 space-y-3 ${hidden ? "opacity-60" : ""}`}>
+                                      {renderField(pageKey, section.key, field)}
+                                      <div className="flex items-center gap-1.5">
+                                        {hidden && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">hidden</span>}
+                                        <button
+                                          onClick={() => setGalleryFlag(pageKey, section.key, n, "hidden", !hidden)}
+                                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-secondary text-xs font-medium hover:bg-secondary/70"
+                                        >
+                                          {hidden ? <Eye size={13} /> : <EyeOff size={13} />} {hidden ? "Show" : "Hide"}
+                                        </button>
+                                        <button
+                                          onClick={() => deleteGalleryImage(pageKey, section.key, n)}
+                                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-destructive hover:bg-destructive/10 text-xs font-medium"
+                                        >
+                                          <Trash2 size={13} /> Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          )
                           : sectionFields.map(field => renderField(pageKey, section.key, field))}
                       </div>
                     )}
