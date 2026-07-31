@@ -32,6 +32,10 @@ const footerDefaults: Record<string, Record<string, string>> = {
     linkedin: "https://linkedin.com",
     twitter: "https://twitter.com",
   },
+  brand: {
+    name_color: "",
+    desc_color: "",
+  },
 };
 
 const Footer = () => {
@@ -39,6 +43,9 @@ const Footer = () => {
   const { get: getF } = useCmsPage("footer", footerDefaults);
   const companyName = `${get("brand", "name_line1")} ${get("brand", "name_line2")}`.trim();
   const locColor = getF("contact", "location_icon_color") || "#f97316";
+  // Brand identity is shared with the navbar; footer may override the colors only.
+  const nameColor = getF("brand", "name_color") || get("brand", "name_color") || "#fca5a5";
+  const descColor = getF("brand", "desc_color") || get("brand", "desc_color") || "#93c5fd";
   return (
   <footer className="bg-primary text-primary-foreground">
     <div className="max-w-7xl mx-auto section-padding">
@@ -48,14 +55,14 @@ const Footer = () => {
           <h3
             className="font-extrabold text-xl mb-1 tracking-wide"
             style={{
-              color: get("brand", "name_color") || "#fca5a5",
+              color: nameColor,
               fontFamily: "Algerian, 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif",
               letterSpacing: "0.05em",
             }}
           >
             {companyName}
           </h3>
-          <p className="italic text-xs opacity-90 mb-2" style={{ color: get("brand", "desc_color") || "#93c5fd" }}>
+          <p className="italic text-xs opacity-90 mb-2" style={{ color: descColor }}>
             {get("brand", "description")}
           </p>
           <p className="text-sm opacity-80 leading-relaxed mb-4">
