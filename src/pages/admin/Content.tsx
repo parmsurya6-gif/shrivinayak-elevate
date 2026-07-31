@@ -93,6 +93,23 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
           { key: "subtitle", label: "Hero Subtitle", type: "textarea", default: "Manufacturer and supplier of precision machined components, welded assemblies & fasteners for global automotive and industrial leaders." },
           { key: "cta_1_text", label: "CTA Button 1 Text", type: "text", default: "Explore Capabilities" },
           { key: "cta_2_text", label: "CTA Button 2 Text", type: "text", default: "Request a Quote" },
+          { key: "media_video", label: "Hero Video URL (upload/paste — hides images when set)", type: "text", default: "" },
+          { key: "media_image_1", label: "Hero Image 1", type: "image", default: "/images/hero-factory.jpg" },
+          { key: "media_image_2", label: "Hero Image 2", type: "image", default: "/images/factory-overview.jpg" },
+          { key: "media_image_3", label: "Hero Image 3", type: "image", default: "/images/cnc-section.jpg" },
+        ],
+      },
+      {
+        key: "journey", label: "Journey Timeline (Flowchart)",
+        fields: [
+          { key: "tagline", label: "Section Tagline", type: "text", default: "Our Journey" },
+          { key: "title", label: "Section Title", type: "text", default: "Milestones That Built Us" },
+          ...[1, 2, 3, 4].flatMap((n) => ([
+            { key: `ms_${n}_year`, label: `Milestone ${n} Year`, type: "text" as const, default: ["2016", "2018", "2021", "2024"][n - 1] },
+            { key: `ms_${n}_title`, label: `Milestone ${n} Title`, type: "text" as const, default: ["Company Founded", "CNC Expansion", "ISO 9001:2015", "22,000+ Sq.Ft. Facility"][n - 1] },
+            { key: `ms_${n}_desc`, label: `Milestone ${n} Description`, type: "textarea" as const, default: ["Shrivinayak Industries established in Chakan, Pune.", "First CNC and VMC machining lines commissioned.", "Certified quality management system implemented.", "Fully integrated manufacturing plant with 100+ employees."][n - 1] },
+            { key: `ms_${n}_order`, label: `Milestone ${n} Display Order`, type: "text" as const, default: String(n) },
+          ])),
         ],
       },
       {
