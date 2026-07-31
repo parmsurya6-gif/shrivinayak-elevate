@@ -79,6 +79,13 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
           { key: "twitter", label: "Twitter URL", type: "text", default: "https://twitter.com" },
         ],
       },
+      {
+        key: "brand", label: "Brand Color Overrides (logo & name come from Navbar)",
+        fields: [
+          { key: "name_color", label: "Company Name Color (hex) — overrides navbar", type: "text", default: "" },
+          { key: "desc_color", label: "Description Color (hex) — overrides navbar", type: "text", default: "" },
+        ],
+      },
     ],
   },
   home: {
@@ -93,6 +100,23 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
           { key: "subtitle", label: "Hero Subtitle", type: "textarea", default: "Manufacturer and supplier of precision machined components, welded assemblies & fasteners for global automotive and industrial leaders." },
           { key: "cta_1_text", label: "CTA Button 1 Text", type: "text", default: "Explore Capabilities" },
           { key: "cta_2_text", label: "CTA Button 2 Text", type: "text", default: "Request a Quote" },
+          { key: "media_video", label: "Hero Video URL (upload/paste — hides images when set)", type: "text", default: "" },
+          { key: "media_image_1", label: "Hero Image 1", type: "image", default: "/images/hero-factory.jpg" },
+          { key: "media_image_2", label: "Hero Image 2", type: "image", default: "/images/factory-overview.jpg" },
+          { key: "media_image_3", label: "Hero Image 3", type: "image", default: "/images/cnc-section.jpg" },
+        ],
+      },
+      {
+        key: "journey", label: "Journey Timeline (Flowchart)",
+        fields: [
+          { key: "tagline", label: "Section Tagline", type: "text", default: "Our Journey" },
+          { key: "title", label: "Section Title", type: "text", default: "Milestones That Built Us" },
+          ...[1, 2, 3, 4].flatMap((n) => ([
+            { key: `ms_${n}_year`, label: `Milestone ${n} Year`, type: "text" as const, default: ["2016", "2018", "2021", "2024"][n - 1] },
+            { key: `ms_${n}_title`, label: `Milestone ${n} Title`, type: "text" as const, default: ["Company Founded", "CNC Expansion", "ISO 9001:2015", "22,000+ Sq.Ft. Facility"][n - 1] },
+            { key: `ms_${n}_desc`, label: `Milestone ${n} Description`, type: "textarea" as const, default: ["Shrivinayak Industries established in Chakan, Pune.", "First CNC and VMC machining lines commissioned.", "Certified quality management system implemented.", "Fully integrated manufacturing plant with 100+ employees."][n - 1] },
+            { key: `ms_${n}_order`, label: `Milestone ${n} Display Order`, type: "text" as const, default: String(n) },
+          ])),
         ],
       },
       {
@@ -827,6 +851,38 @@ const ContentManager = () => {
   };
 
   const addFacilitySection = (pageKey: string, sectionKey: string) => {
+    return addFacilitySectionInner(pageKey, sectionKey);
+  };
+
+  const addJourneyMilestone = (pageKey: string, sectionKey: string) => {
+    const sid = `${pageKey}|${sectionKey}`;
+    const existing = [
+      ...(PAGE_STRUCTURE[pageKey].sections.find(s => s.key === sectionKey)?.fields ?? []),
+      ...(extraFields[sid] ?? []),
+    ];
+    const nums = existing
+      .map(f => f.key.match(/^ms_(\d+)_title$/))
+      .filter(Boolean)
+      .map(m => parseInt(m![1], 10));
+    const n = (nums.length ? Math.max(...nums) : 0) + 1;
+    const newFields: FieldDef[] = [
+      { key: `ms_${n}_year`, label: `Milestone ${n} Year`, type: "text" },
+      { key: `ms_${n}_title`, label: `Milestone ${n} Title`, type: "text" },
+      { key: `ms_${n}_desc`, label: `Milestone ${n} Description`, type: "textarea" },
+      { key: `ms_${n}_order`, label: `Milestone ${n} Display Order`, type: "text" },
+    ];
+    setExtraFields(prev => ({ ...prev, [sid]: [...(prev[sid] ?? []), ...newFields] }));
+    setLocalValues(prev => ({
+      ...prev,
+      [`${pageKey}|${sectionKey}|ms_${n}_year`]: "",
+      [`${pageKey}|${sectionKey}|ms_${n}_title`]: "",
+      [`${pageKey}|${sectionKey}|ms_${n}_desc`]: "",
+      [`${pageKey}|${sectionKey}|ms_${n}_order`]: String(n),
+    }));
+    toast.success(`Added Milestone ${n}`);
+  };
+
+  const addFacilitySectionInner = (pageKey: string, sectionKey: string) => {
     const sid = `${pageKey}|${sectionKey}`;
     const existing = [
       ...(PAGE_STRUCTURE[pageKey].sections.find(s => s.key === sectionKey)?.fields ?? []),
@@ -893,6 +949,37 @@ const ContentManager = () => {
   };
 
   const renderField = (pageKey: string, sectionKey: string, field: FieldDef) => {
+    return renderFieldInner(pageKey, sectionKey, field);
+  };
+
+  // ---- Product gallery helpers (hide / delete) ----
+  const galleryNumbers = (fields: FieldDef[]) =>
+    Array.from(
+      new Set(
+        fields
+          .map(f => f.key.match(/^product_(\d+)_image$/))
+          .filter(Boolean)
+          .map(m => parseInt(m![1], 10))
+      )
+    ).sort((a, b) => a - b);
+
+  const setGalleryFlag = async (pageKey: string, sectionKey: string, n: number, flag: "hidden" | "deleted", value: boolean) => {
+    const key = `product_${n}_${flag}`;
+    setFieldValue(pageKey, sectionKey, key, value ? "true" : "false");
+    const ok = await upsertContent(pageKey, sectionKey, key, value ? "true" : "false", "text");
+    if (!ok) { toast.error("Failed to update image"); return; }
+    toast.success(flag === "hidden" ? (value ? "Image hidden" : "Image visible") : "Image deleted");
+    await load();
+  };
+
+  const deleteGalleryImage = async (pageKey: string, sectionKey: string, n: number) => {
+    if (!confirm(`Delete Product ${n} image from the gallery?`)) return;
+    await upsertContent(pageKey, sectionKey, `product_${n}_image`, "", "image");
+    setFieldValue(pageKey, sectionKey, `product_${n}_image`, "");
+    await setGalleryFlag(pageKey, sectionKey, n, "deleted", true);
+  };
+
+  const renderFieldInner = (pageKey: string, sectionKey: string, field: FieldDef) => {
     const saved = isFieldSaved(pageKey, sectionKey, field.key);
     return (
       <div key={field.key}>
@@ -1063,6 +1150,7 @@ const ContentManager = () => {
                 const savedCount = sectionFields.filter(f => isFieldSaved(pageKey, section.key, f.key)).length;
                 const isProductGallery = pageKey === "products" && section.key === "gallery";
                 const isFacilitySections = pageKey === "facility" && section.key === "sections";
+                const isJourney = pageKey === "home" && section.key === "journey";
 
                 return (
                   <div key={sectionId} className="bg-card rounded-xl border border-border overflow-hidden">
@@ -1092,6 +1180,14 @@ const ContentManager = () => {
                             className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
                           >
                             <Plus size={14} /> Add Section
+                          </button>
+                        )}
+                        {isJourney && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); addJourneyMilestone(pageKey, section.key); }}
+                            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-foreground text-xs md:text-sm font-medium hover:bg-secondary/80 transition-colors"
+                          >
+                            <Plus size={14} /> Add Milestone
                           </button>
                         )}
                         <button
@@ -1158,6 +1254,37 @@ const ContentManager = () => {
                                   </div>
                                 );
                               })
+                          : isProductGallery
+                          ? (
+                            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {galleryNumbers(sectionFields)
+                                .filter(n => getFieldValue(pageKey, section.key, `product_${n}_deleted`) !== "true")
+                                .map(n => {
+                                  const hidden = getFieldValue(pageKey, section.key, `product_${n}_hidden`) === "true";
+                                  const field = sectionFields.find(f => f.key === `product_${n}_image`)!;
+                                  return (
+                                    <div key={n} className={`rounded-lg border border-border p-3 space-y-3 ${hidden ? "opacity-60" : ""}`}>
+                                      {renderField(pageKey, section.key, field)}
+                                      <div className="flex items-center gap-1.5">
+                                        {hidden && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700">hidden</span>}
+                                        <button
+                                          onClick={() => setGalleryFlag(pageKey, section.key, n, "hidden", !hidden)}
+                                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-secondary text-xs font-medium hover:bg-secondary/70"
+                                        >
+                                          {hidden ? <Eye size={13} /> : <EyeOff size={13} />} {hidden ? "Show" : "Hide"}
+                                        </button>
+                                        <button
+                                          onClick={() => deleteGalleryImage(pageKey, section.key, n)}
+                                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-destructive hover:bg-destructive/10 text-xs font-medium"
+                                        >
+                                          <Trash2 size={13} /> Delete
+                                        </button>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          )
                           : sectionFields.map(field => renderField(pageKey, section.key, field))}
                       </div>
                     )}

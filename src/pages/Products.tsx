@@ -15,25 +15,37 @@ const defaults: Record<string, Record<string, string>> = {
 
 const Products = () => {
   const { get } = useCmsPage("products", defaults);
+  const [rows, setRows] = useState<Record<string, string>>({});
   const [extraImages, setExtraImages] = useState<string[]>([]);
 
   useEffect(() => {
-    supabase
+    const load = () => supabase
       .from("site_content")
       .select("content_key, content_value")
       .eq("page", "products")
       .eq("section", "gallery")
       .then(({ data }) => {
+        const map: Record<string, string> = {};
+        (data ?? []).forEach((d) => { map[d.content_key] = d.content_value ?? ""; });
+        setRows(map);
         const baseKeys = new Set(Array.from({ length: 10 }, (_, i) => `product_${i + 1}_image`));
         const extras = (data ?? [])
-          .filter((d) => !baseKeys.has(d.content_key) && d.content_value)
+          .filter((d) => /^product_\d+_image$/.test(d.content_key) && !baseKeys.has(d.content_key) && d.content_value)
+          .filter((d) => {
+            const n = d.content_key.match(/^product_(\d+)_image$/)![1];
+            return map[`product_${n}_hidden`] !== "true" && map[`product_${n}_deleted`] !== "true";
+          })
           .sort((a, b) => a.content_key.localeCompare(b.content_key))
           .map((d) => d.content_value as string);
         setExtraImages(extras);
       });
+    load();
   }, []);
 
-  const baseProducts = Array.from({ length: 10 }, (_, i) => get("gallery", `product_${i + 1}_image`)).filter(Boolean);
+  const baseProducts = Array.from({ length: 10 }, (_, i) => i + 1)
+    .filter((n) => rows[`product_${n}_hidden`] !== "true" && rows[`product_${n}_deleted`] !== "true")
+    .map((n) => get("gallery", `product_${n}_image`))
+    .filter(Boolean);
   const products = [...baseProducts, ...extraImages];
 
   return (
