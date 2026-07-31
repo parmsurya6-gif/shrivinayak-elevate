@@ -851,6 +851,38 @@ const ContentManager = () => {
   };
 
   const addFacilitySection = (pageKey: string, sectionKey: string) => {
+    return addFacilitySectionInner(pageKey, sectionKey);
+  };
+
+  const addJourneyMilestone = (pageKey: string, sectionKey: string) => {
+    const sid = `${pageKey}|${sectionKey}`;
+    const existing = [
+      ...(PAGE_STRUCTURE[pageKey].sections.find(s => s.key === sectionKey)?.fields ?? []),
+      ...(extraFields[sid] ?? []),
+    ];
+    const nums = existing
+      .map(f => f.key.match(/^ms_(\d+)_title$/))
+      .filter(Boolean)
+      .map(m => parseInt(m![1], 10));
+    const n = (nums.length ? Math.max(...nums) : 0) + 1;
+    const newFields: FieldDef[] = [
+      { key: `ms_${n}_year`, label: `Milestone ${n} Year`, type: "text" },
+      { key: `ms_${n}_title`, label: `Milestone ${n} Title`, type: "text" },
+      { key: `ms_${n}_desc`, label: `Milestone ${n} Description`, type: "textarea" },
+      { key: `ms_${n}_order`, label: `Milestone ${n} Display Order`, type: "text" },
+    ];
+    setExtraFields(prev => ({ ...prev, [sid]: [...(prev[sid] ?? []), ...newFields] }));
+    setLocalValues(prev => ({
+      ...prev,
+      [`${pageKey}|${sectionKey}|ms_${n}_year`]: "",
+      [`${pageKey}|${sectionKey}|ms_${n}_title`]: "",
+      [`${pageKey}|${sectionKey}|ms_${n}_desc`]: "",
+      [`${pageKey}|${sectionKey}|ms_${n}_order`]: String(n),
+    }));
+    toast.success(`Added Milestone ${n}`);
+  };
+
+  const addFacilitySectionInner = (pageKey: string, sectionKey: string) => {
     const sid = `${pageKey}|${sectionKey}`;
     const existing = [
       ...(PAGE_STRUCTURE[pageKey].sections.find(s => s.key === sectionKey)?.fields ?? []),
