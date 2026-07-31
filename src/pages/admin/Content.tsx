@@ -79,6 +79,13 @@ const PAGE_STRUCTURE: Record<string, { label: string; sections: SectionDef[] }> 
           { key: "twitter", label: "Twitter URL", type: "text", default: "https://twitter.com" },
         ],
       },
+      {
+        key: "brand", label: "Brand Color Overrides (logo & name come from Navbar)",
+        fields: [
+          { key: "name_color", label: "Company Name Color (hex) — overrides navbar", type: "text", default: "" },
+          { key: "desc_color", label: "Description Color (hex) — overrides navbar", type: "text", default: "" },
+        ],
+      },
     ],
   },
   home: {
