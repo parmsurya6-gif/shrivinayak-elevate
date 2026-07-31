@@ -893,6 +893,37 @@ const ContentManager = () => {
   };
 
   const renderField = (pageKey: string, sectionKey: string, field: FieldDef) => {
+    return renderFieldInner(pageKey, sectionKey, field);
+  };
+
+  // ---- Product gallery helpers (hide / delete) ----
+  const galleryNumbers = (fields: FieldDef[]) =>
+    Array.from(
+      new Set(
+        fields
+          .map(f => f.key.match(/^product_(\d+)_image$/))
+          .filter(Boolean)
+          .map(m => parseInt(m![1], 10))
+      )
+    ).sort((a, b) => a - b);
+
+  const setGalleryFlag = async (pageKey: string, sectionKey: string, n: number, flag: "hidden" | "deleted", value: boolean) => {
+    const key = `product_${n}_${flag}`;
+    setFieldValue(pageKey, sectionKey, key, value ? "true" : "false");
+    const ok = await upsertContent(pageKey, sectionKey, key, value ? "true" : "false", "text");
+    if (!ok) { toast.error("Failed to update image"); return; }
+    toast.success(flag === "hidden" ? (value ? "Image hidden" : "Image visible") : "Image deleted");
+    await load();
+  };
+
+  const deleteGalleryImage = async (pageKey: string, sectionKey: string, n: number) => {
+    if (!confirm(`Delete Product ${n} image from the gallery?`)) return;
+    await upsertContent(pageKey, sectionKey, `product_${n}_image`, "", "image");
+    setFieldValue(pageKey, sectionKey, `product_${n}_image`, "");
+    await setGalleryFlag(pageKey, sectionKey, n, "deleted", true);
+  };
+
+  const renderFieldInner = (pageKey: string, sectionKey: string, field: FieldDef) => {
     const saved = isFieldSaved(pageKey, sectionKey, field.key);
     return (
       <div key={field.key}>
