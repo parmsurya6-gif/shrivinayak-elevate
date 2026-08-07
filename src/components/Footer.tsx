@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { useCmsPage } from "@/hooks/useCmsPage";
+import BrandName from "./BrandName";
 
 const navbarDefaults: Record<string, Record<string, string>> = {
   brand: {
@@ -45,24 +46,29 @@ const Footer = () => {
   const locColor = getF("contact", "location_icon_color") || "#f97316";
   // Brand identity is shared with the navbar; footer may override the colors only.
   const nameColor = getF("brand", "name_color") || get("brand", "name_color") || "#fca5a5";
-  const descColor = getF("brand", "desc_color") || get("brand", "desc_color") || "#93c5fd";
+  // Footer description defaults to white; admin can override any time.
+  const descColor = getF("brand", "desc_color") || "#ffffff";
   return (
   <footer className="bg-primary text-primary-foreground">
     <div className="max-w-7xl mx-auto section-padding">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
           <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-16 w-auto mb-3 rounded bg-card p-1" />
-          <h3
-            className="font-extrabold text-xl mb-1 tracking-wide"
+          <BrandName
+            line1={get("brand", "name_line1")}
+            line2={get("brand", "name_line2")}
+            color={nameColor}
+            size="clamp(1rem, 2.1vw, 2.25rem)"
+            className="font-extrabold mb-1"
+          />
+          <p
+            className="italic mb-2 mt-1"
             style={{
-              color: nameColor,
-              fontFamily: "Algerian, 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif",
-              letterSpacing: "0.05em",
+              color: descColor,
+              fontSize: "clamp(0.6rem, 0.9vw, 0.85rem)",
+              fontFamily: "'Playfair Display', Georgia, serif",
             }}
           >
-            {companyName}
-          </h3>
-          <p className="italic text-xs opacity-90 mb-2" style={{ color: descColor }}>
             {get("brand", "description")}
           </p>
           <p className="text-sm opacity-80 leading-relaxed mb-4">
