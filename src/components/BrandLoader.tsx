@@ -9,8 +9,8 @@ const brandDefaults: Record<string, Record<string, string>> = {
     name_line2: "Industries",
     alt: "Shrivinayak Industries",
     description: "Precision Machined Components & Assemblies",
-    bg_from: "#dbeafe",
-    bg_to: "#93c5fd",
+    bg_from: "#93c5fd",
+    bg_to: "#dbeafe",
     name_color: "#b91c1c",
     desc_color: "#1e3a8a",
   },
@@ -40,7 +40,7 @@ const BrandLoader = () => {
         <motion.div
           className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
           style={{
-            background: `linear-gradient(180deg, ${get("brand", "bg_from") || "#dbeafe"} 0%, ${get("brand", "bg_to") || "#93c5fd"} 100%)`,
+            background: `linear-gradient(180deg, ${get("brand", "bg_from") || "#93c5fd"} 0%, ${get("brand", "bg_to") || "#dbeafe"} 100%)`,
           }}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: "blur(8px)" }}

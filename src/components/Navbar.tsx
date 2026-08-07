@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, LogIn, LogOut, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import RequestQuoteDialog from "./RequestQuoteDialog";
+import BrandName from "./BrandName";
 import { useCmsPage } from "@/hooks/useCmsPage";
 
 const navbarDefaults: Record<string, Record<string, string>> = {
@@ -12,8 +13,8 @@ const navbarDefaults: Record<string, Record<string, string>> = {
     name_line2: "Industries",
     alt: "Shrivinayak Industries",
     description: "Precision Machined Components & Assemblies",
-    bg_from: "#dbeafe",
-    bg_to: "#93c5fd",
+    bg_from: "#93c5fd",
+    bg_to: "#dbeafe",
     name_color: "#b91c1c",
     desc_color: "#1e3a8a",
   },
@@ -80,7 +81,7 @@ const Navbar = () => {
         ref={navRef}
         className="fixed top-0 left-0 right-0 z-50 border-b border-border shadow-sm"
         style={{
-          background: `linear-gradient(180deg, ${get("brand", "bg_from") || "#dbeafe"} 0%, ${get("brand", "bg_to") || "#93c5fd"} 100%)`,
+          background: `linear-gradient(180deg, ${get("brand", "bg_from") || "#93c5fd"} 0%, ${get("brand", "bg_to") || "#dbeafe"} 100%)`,
         }}
       >
         <div className="w-full mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
@@ -92,19 +93,20 @@ const Navbar = () => {
                 className="h-10 sm:h-12 lg:h-16 w-auto max-w-[80px] object-contain flex-shrink-0 drop-shadow-sm"
               />
               <div className="hidden sm:block min-w-0">
+                <BrandName
+                  line1={get("brand", "name_line1")}
+                  line2={get("brand", "name_line2")}
+                  color={get("brand", "name_color") || "#b91c1c"}
+                  size="clamp(0.9rem, 1.6vw, 1.75rem)"
+                  className="font-extrabold"
+                />
                 <p
-                  className="font-display font-extrabold tracking-wide text-base lg:text-2xl leading-tight truncate"
+                  className="italic leading-tight truncate mt-1"
                   style={{
-                    color: get("brand", "name_color") || "#b91c1c",
-                    fontFamily: "Algerian, 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif",
-                    letterSpacing: "0.05em",
+                    color: get("brand", "desc_color") || "#1e3a8a",
+                    fontSize: "clamp(0.55rem, 0.85vw, 0.85rem)",
+                    fontFamily: "'Playfair Display', Georgia, serif",
                   }}
-                >
-                  {`${get("brand", "name_line1")} ${get("brand", "name_line2")}`.trim()}
-                </p>
-                <p
-                  className="italic text-[10px] lg:text-xs leading-tight truncate mt-0.5"
-                  style={{ color: get("brand", "desc_color") || "#1e3a8a" }}
                 >
                   {get("brand", "description")}
                 </p>
