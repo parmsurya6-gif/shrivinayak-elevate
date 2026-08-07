@@ -81,7 +81,7 @@ const Navbar = () => {
         ref={navRef}
         className="fixed top-0 left-0 right-0 z-50 border-b border-border shadow-sm"
         style={{
-          background: `linear-gradient(180deg, ${get("brand", "bg_from") || "#dbeafe"} 0%, ${get("brand", "bg_to") || "#93c5fd"} 100%)`,
+          background: `linear-gradient(180deg, ${get("brand", "bg_from") || "#93c5fd"} 0%, ${get("brand", "bg_to") || "#dbeafe"} 100%)`,
         }}
       >
         <div className="w-full mx-auto px-3 sm:px-4 lg:px-6 xl:px-8">
