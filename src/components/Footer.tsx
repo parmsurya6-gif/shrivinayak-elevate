@@ -5,7 +5,7 @@ import BrandName from "./BrandName";
 
 const navbarDefaults: Record<string, Record<string, string>> = {
   brand: {
-    logo: "/images/logo.jpg",
+    logo: "/images/logo-transparent.png",
     name_line1: "Shrivinayak",
     name_line2: "Industries",
     alt: "Shrivinayak Industries",
@@ -53,7 +53,7 @@ const Footer = () => {
     <div className="max-w-7xl mx-auto section-padding">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
-          <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-16 w-auto mb-3 rounded bg-card p-1" />
+          <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-16 w-auto mb-3 object-contain" />
           <BrandName
             line1={get("brand", "name_line1")}
             line2={get("brand", "name_line2")}

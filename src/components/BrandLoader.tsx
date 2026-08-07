@@ -4,7 +4,7 @@ import { useCmsPage } from "@/hooks/useCmsPage";
 
 const brandDefaults: Record<string, Record<string, string>> = {
   brand: {
-    logo: "/images/logo.jpg",
+    logo: "/images/logo-transparent.png",
     name_line1: "Shrivinayak",
     name_line2: "Industries",
     alt: "Shrivinayak Industries",
@@ -82,7 +82,7 @@ const BrandLoader = () => {
               <img
                 src={get("brand", "logo")}
                 alt={get("brand", "alt")}
-                className="relative h-20 w-20 md:h-24 md:w-24 object-contain rounded-full bg-card p-2 shadow-lg"
+                className="relative h-20 w-20 md:h-24 md:w-24 object-contain"
               />
             </motion.div>
 

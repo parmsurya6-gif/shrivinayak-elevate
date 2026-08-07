@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Play, Pause, Volume2, VolumeX, RotateCcw } from "lucide-react";
 
 interface Props {
   video?: string;
@@ -16,24 +17,79 @@ const DURATION = 3000;
 const HeroMedia = ({ video, images, alt = "Shrivinayak Industries" }: Props) => {
   const slides = images.filter(Boolean);
   const [current, setCurrent] = useState(0);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const [playing, setPlaying] = useState(true);
+  const [muted, setMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Reset failure state whenever the admin swaps/removes the video.
+  useEffect(() => setVideoFailed(false), [video]);
+
+  const useVideo = Boolean(video) && !videoFailed;
 
   useEffect(() => {
-    if (video || slides.length < 2) return;
+    if (useVideo || slides.length < 2) return;
     const t = setInterval(() => setCurrent((p) => (p + 1) % slides.length), DURATION);
     return () => clearInterval(t);
-  }, [video, slides.length]);
+  }, [useVideo, slides.length]);
 
-  if (video) {
+  if (useVideo) {
+    const togglePlay = () => {
+      const el = videoRef.current;
+      if (!el) return;
+      if (el.paused) { el.play(); setPlaying(true); } else { el.pause(); setPlaying(false); }
+    };
+    const toggleMute = () => {
+      const el = videoRef.current;
+      if (!el) return;
+      el.muted = !el.muted;
+      setMuted(el.muted);
+    };
+    const restart = () => {
+      const el = videoRef.current;
+      if (!el) return;
+      el.currentTime = 0;
+      el.play();
+      setPlaying(true);
+    };
     return (
       <div className="relative rounded-2xl overflow-hidden border border-border shadow-[0_24px_60px_-24px_hsl(var(--foreground)/0.35)] aspect-video bg-foreground">
         <video
+          ref={videoRef}
           src={video}
           className="h-full w-full object-cover"
           autoPlay
           muted
           loop
           playsInline
+          onError={() => setVideoFailed(true)}
+          onStalled={() => setVideoFailed(true)}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
         />
+        <div className="absolute bottom-3 right-3 z-10 flex items-center gap-2">
+          <button
+            onClick={togglePlay}
+            aria-label={playing ? "Pause video" : "Play video"}
+            className="grid h-9 w-9 place-items-center rounded-full bg-background/80 text-foreground hover:bg-background transition-colors"
+          >
+            {playing ? <Pause size={16} /> : <Play size={16} />}
+          </button>
+          <button
+            onClick={toggleMute}
+            aria-label={muted ? "Unmute video" : "Mute video"}
+            className="grid h-9 w-9 place-items-center rounded-full bg-background/80 text-foreground hover:bg-background transition-colors"
+          >
+            {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+          </button>
+          <button
+            onClick={restart}
+            aria-label="Restart video"
+            className="grid h-9 w-9 place-items-center rounded-full bg-background/80 text-foreground hover:bg-background transition-colors"
+          >
+            <RotateCcw size={16} />
+          </button>
+        </div>
       </div>
     );
   }

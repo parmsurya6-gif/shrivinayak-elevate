@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
 
-const LINCOLN = "'Lincoln', 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif";
+const LINCOLN = "'A Lincoln', 'ALincoln', 'Lincoln', 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif";
 const ALGERIAN = "Algerian, 'Cinzel Decorative', 'Rye', 'Cinzel', Georgia, serif";
 
 interface Props {
