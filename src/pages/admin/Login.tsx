@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { useCmsPage } from "@/hooks/useCmsPage";
+import BrandName from "@/components/BrandName";
 
 const navbarDefaults: Record<string, Record<string, string>> = {
   brand: {
@@ -11,6 +12,9 @@ const navbarDefaults: Record<string, Record<string, string>> = {
     name_line1: "Shrivinayak",
     name_line2: "Industries",
     alt: "Shrivinayak Industries",
+    description: "Precision Machined Components & Assemblies",
+    name_color: "#b91c1c",
+    desc_color: "#1e3a8a",
   },
 };
 
@@ -48,6 +52,19 @@ const AdminLogin = () => {
       <div className="bg-card rounded-xl p-8 border border-border shadow-lg max-w-md w-full">
         <div className="text-center mb-8">
           <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-16 mx-auto mb-4 rounded" />
+          <BrandName
+            line1={get("brand", "name_line1")}
+            line2={get("brand", "name_line2")}
+            color={get("brand", "name_color") || "#b91c1c"}
+            size="clamp(1rem, 3.5vw, 1.75rem)"
+            className="font-extrabold justify-center"
+          />
+          <p
+            className="italic mt-1 mb-4"
+            style={{ color: get("brand", "desc_color") || "#1e3a8a", fontSize: "clamp(0.6rem, 2vw, 0.8rem)", fontFamily: "'Playfair Display', Georgia, serif" }}
+          >
+            {get("brand", "description")}
+          </p>
           <h1 className="font-display font-bold text-2xl">Admin Login</h1>
           <p className="text-muted-foreground text-sm mt-1">Sign in to manage your website</p>
         </div>
