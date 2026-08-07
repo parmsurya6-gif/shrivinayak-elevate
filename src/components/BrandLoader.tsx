@@ -4,7 +4,7 @@ import { useCmsPage } from "@/hooks/useCmsPage";
 
 const brandDefaults: Record<string, Record<string, string>> = {
   brand: {
-    logo: "/images/logo.jpg",
+    logo: "/images/logo-transparent.png",
     name_line1: "Shrivinayak",
     name_line2: "Industries",
     alt: "Shrivinayak Industries",

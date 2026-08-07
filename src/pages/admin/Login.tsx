@@ -8,7 +8,7 @@ import BrandName from "@/components/BrandName";
 
 const navbarDefaults: Record<string, Record<string, string>> = {
   brand: {
-    logo: "/images/logo.jpg",
+    logo: "/images/logo-transparent.png",
     name_line1: "Shrivinayak",
     name_line2: "Industries",
     alt: "Shrivinayak Industries",
@@ -51,7 +51,7 @@ const AdminLogin = () => {
     <div className="min-h-screen flex items-center justify-center bg-secondary/30 px-4">
       <div className="bg-card rounded-xl p-8 border border-border shadow-lg max-w-md w-full">
         <div className="text-center mb-8">
-          <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-16 mx-auto mb-4 rounded" />
+          <img src={get("brand", "logo")} alt={get("brand", "alt")} className="h-16 mx-auto mb-4 object-contain" />
           <BrandName
             line1={get("brand", "name_line1")}
             line2={get("brand", "name_line2")}
