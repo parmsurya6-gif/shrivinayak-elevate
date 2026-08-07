@@ -40,7 +40,7 @@ const BrandName = ({
 
   return (
     <span
-      className={`inline-flex flex-wrap items-baseline leading-none whitespace-pre ${className}`}
+      className={`inline-flex items-baseline leading-none whitespace-pre ${className}`}
       style={{ fontSize: size, color, fontFamily: ALGERIAN, letterSpacing: "0.04em", ...style }}
     >
       <span style={{ fontFamily: LINCOLN, fontSize: "1em" }}>{s1}</span>

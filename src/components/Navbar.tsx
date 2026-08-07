@@ -97,7 +97,7 @@ const Navbar = () => {
                   line1={get("brand", "name_line1")}
                   line2={get("brand", "name_line2")}
                   color={get("brand", "name_color") || "#b91c1c"}
-                  size="clamp(1rem, 2.2vw, 2.625rem)"
+                  size="clamp(0.9rem, 1.6vw, 1.75rem)"
                   className="font-extrabold"
                 />
                 <p

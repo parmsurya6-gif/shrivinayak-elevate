@@ -58,7 +58,7 @@ const Footer = () => {
             line1={get("brand", "name_line1")}
             line2={get("brand", "name_line2")}
             color={nameColor}
-            size="clamp(1rem, 2.1vw, 2.25rem)"
+            size="clamp(0.95rem, 1.7vw, 1.5rem)"
             className="font-extrabold mb-1"
           />
           <p
